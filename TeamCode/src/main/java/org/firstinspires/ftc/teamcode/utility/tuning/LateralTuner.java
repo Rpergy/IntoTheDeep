@@ -14,9 +14,9 @@ import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
 import java.util.ArrayList;
 
 @Config
-@TeleOp(name="Perpendicular Tuner", group="tuning")
-public class PerpendicularTuner extends OpMode {
-    public static double measuredDist = 0.0;
+@TeleOp(name="Lateral Tuner", group="tuning")
+public class LateralTuner extends OpMode {
+    public static double measuredAngle = Math.PI;
 
     @Override
     public void init() {
@@ -27,11 +27,11 @@ public class PerpendicularTuner extends OpMode {
     public void loop() {
         AutoMovement.updatePosition();
 
-        Actuation.drive(0, 0, gamepad1.left_stick_x);
+        Actuation.drive(0, gamepad1.right_stick_x, 0);
 
-        telemetry.addData("Y pos", AutoMovement.robotPose.y);
-        telemetry.addData("diff", measuredDist / AutoMovement.robotPose.y);
-        telemetry.addData("new perpendicular multiplier", ActuationConstants.Drivetrain.perpendicularMultiplier * (measuredDist /AutoMovement.robotPose.y));
+        telemetry.addData("Heading", AutoMovement.robotPose.heading);
+        telemetry.addData("diff", measuredAngle / AutoMovement.robotPose.heading);
+        telemetry.addData("new lateral multiplier", ActuationConstants.Drivetrain.lateral_multiplier / (measuredAngle/AutoMovement.robotPose.heading));
         telemetry.update();
     }
 }

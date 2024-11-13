@@ -28,7 +28,7 @@ public class Actuation {
 
     public static DcMotor frontLeft, frontRight, backLeft, backRight;
 
-    private static RevBlinkinLedDriver leds;
+//    private static RevBlinkinLedDriver leds;
 
     private static FtcDashboard dashboard;
 
@@ -39,8 +39,8 @@ public class Actuation {
 
         telemetry = tel;
 
-        leds = map.get(RevBlinkinLedDriver.class, "leds");
-        leds.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
+//        leds = map.get(RevBlinkinLedDriver.class, "leds");
+//        leds.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
 
         frontLeft  = map.get(DcMotor.class, "frontLeft");
         frontRight = map.get(DcMotor.class, "frontRight");
@@ -59,6 +59,7 @@ public class Actuation {
 
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         dashboard = FtcDashboard.getInstance();
     }
@@ -95,7 +96,7 @@ public class Actuation {
         fieldCentricToggle = toggleFieldCentric;
     }
 
-    public static void setLeds(RevBlinkinLedDriver.BlinkinPattern pattern) {
-        leds.setPattern(pattern);
-    }
+//    public static void setLeds(RevBlinkinLedDriver.BlinkinPattern pattern) {
+//        leds.setPattern(pattern);
+//    }
 }

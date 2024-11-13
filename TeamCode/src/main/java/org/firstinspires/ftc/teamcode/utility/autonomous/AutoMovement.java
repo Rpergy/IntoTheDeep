@@ -75,11 +75,6 @@ public class AutoMovement {
         dx_center = ((delta_ticks_left + delta_ticks_right) / 2) * ActuationConstants.Drivetrain.scale * ActuationConstants.Drivetrain.centerMultiplier;
         dx_perpendicular = -1 * (delta_ticks_back - (ActuationConstants.Drivetrain.forward_offset * ((delta_ticks_left - delta_ticks_right) / ActuationConstants.Drivetrain.track_width))) * ActuationConstants.Drivetrain.scale * ActuationConstants.Drivetrain.perpendicularMultiplier;
 
-//        pose exponential terribleness
-//        a = robotPose.heading
-//        b = dtheta
-//        c = dx_center
-//        d = dx_perpendicular
         if(dtheta != 0) {
             dx = (dx_center * (Math.sin(dtheta) * Math.cos(robotPose.heading) - Math.sin(robotPose.heading) * (-Math.cos(dtheta) + 1)) + dx_perpendicular * (Math.cos(robotPose.heading) * (Math.cos(dtheta) - 1) - Math.sin(dtheta) * Math.sin(robotPose.heading))) / dtheta;
             dy = (dx_center * (Math.sin(dtheta) * Math.sin(robotPose.heading) + Math.cos(robotPose.heading) * (-Math.cos(dtheta) + 1)) + dx_perpendicular * (Math.sin(robotPose.heading) * (Math.cos(dtheta) - 1) + Math.sin(dtheta) * Math.cos(robotPose.heading))) / dtheta;
@@ -310,6 +305,9 @@ public class AutoMovement {
 
         packet.fieldOverlay().setStroke("white");
         packet.fieldOverlay().strokeLine(robotPose.x, robotPose.y, xs[4], ys[4]);
+
+        packet.put("X", robotPose.x);
+        packet.put("Y", robotPose.y);
 
         dashboard.sendTelemetryPacket(packet);
     }
