@@ -15,7 +15,7 @@ public class RobotTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        Actuation.drive(gamepad1.left_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x);
+        Actuation.drive(gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.left_stick_x);
         AutoMovement.updatePosition();
         AutoMovement.displayPosition();
         telemetry.addData("Pose", AutoMovement.robotPose);

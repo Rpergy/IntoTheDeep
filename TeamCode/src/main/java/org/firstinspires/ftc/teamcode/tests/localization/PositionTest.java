@@ -4,14 +4,10 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.hardware.bosch.BHI260IMU;
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.utility.ActuationConstants;
 
@@ -66,7 +62,7 @@ public class PositionTest extends OpMode {
         forward_offset = ActuationConstants.Drivetrain.forward_offset; // in distance from center of robot to perp wheel
         ticksPerRev = 8192;
 
-        lateral_multiplier = ActuationConstants.Drivetrain.lateral_multiplier; //1.010112392;
+        lateral_multiplier = ActuationConstants.Drivetrain.lateralMultiplier; //1.010112392;
         center_multiplier = ActuationConstants.Drivetrain.centerMultiplier; //2.05759425438;
         perpendicular_multiplier = ActuationConstants.Drivetrain.perpendicularMultiplier;//1.2;
 

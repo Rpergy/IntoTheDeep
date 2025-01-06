@@ -126,7 +126,7 @@ public class AutoMovement {
         double v3 = -movePower + turnPower + strafePower;
         double v4 = -movePower - turnPower - strafePower;
 
-        double voltageComp = 12 / voltageSensor.getVoltage();
+        double voltageComp = 1; //12 / voltageSensor.getVoltage();
 
         Actuation.frontLeft.setPower(v1 * voltageComp);
         Actuation.frontRight.setPower(v2 * voltageComp);
@@ -137,7 +137,7 @@ public class AutoMovement {
         packet.put("movePower", movePower);
         packet.put("turnPower", turnPower);
         packet.put("strafePower", strafePower);
-//        dashboard.sendTelemetryPacket(packet);
+        dashboard.sendTelemetryPacket(packet);
     }
 
     public static double calcTurnTowards(double targetHeading, double turnSpeed) {
@@ -160,7 +160,7 @@ public class AutoMovement {
 
     public static void turnTowards(double targetHeading, double turnSpeed) {
         double turnPower = calcTurnTowards(targetHeading, turnSpeed);
-        double voltageComp = 12 / voltageSensor.getVoltage();
+        double voltageComp = 1; //12 / voltageSensor.getVoltage();
         Actuation.frontLeft.setPower(turnPower * voltageComp);
         Actuation.frontRight.setPower(-turnPower * voltageComp);
         Actuation.backLeft.setPower(turnPower * voltageComp);
