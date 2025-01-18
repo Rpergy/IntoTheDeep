@@ -26,7 +26,27 @@ public class Actuation {
     private static boolean fieldCentricToggle = false;
     private static boolean slowModeToggle = false;
 
+    private static boolean intakeExtendToggle = false;
+    private static boolean intakeExtend = false;
+    private static boolean intakeClawToggle = false;
+    private static boolean intakeClaw = false;
+    private static boolean intakeDownToggle = false;
+    private static boolean isIntakeDown = false;
+
+    private static boolean depositExtendToggle = false;
+    private static boolean depositExtended = false;
+    private static boolean depositWristToggle = false;
+    private static boolean depositWristPos = false;
+    private static boolean depositClawToggle = false;
+    private static boolean depositClaw = false;
+
     public static DcMotor frontLeft, frontRight, backLeft, backRight;
+
+    public static DcMotor leftDeposit, rightDeposit;
+    public static DcMotor leftIntake, rightIntake;
+
+    public static Servo intake, intakeWrist, intakeDown;
+    public static Servo depositWrist, depositor;
 
 //    private static RevBlinkinLedDriver leds;
 
@@ -62,6 +82,59 @@ public class Actuation {
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        if (map.dcMotor.contains("leftIntake")) {
+            leftIntake = map.dcMotor.get("leftIntake");
+
+            leftIntake.setPower(1.0);
+            leftIntake.setTargetPosition(ActuationConstants.Intake.min);
+            leftIntake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+        if (map.dcMotor.contains("rightIntake")) {
+            rightIntake = map.dcMotor.get("rightIntake");
+
+            rightIntake.setPower(1.0);
+            rightIntake.setTargetPosition(ActuationConstants.Intake.min);
+            rightIntake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
+        if (map.servo.contains("intake")) {
+            intake = map.servo.get("intake");
+            intake.setPosition(ActuationConstants.Intake.open);
+        }
+        if (map.servo.contains("intakeDown")) {
+            intakeDown = map.servo.get("intakeDown");
+            intakeDown.setPosition(ActuationConstants.Intake.up);
+        }
+        if (map.servo.contains("intakeWrist")) {
+            intakeWrist = map.servo.get("intakeWrist");
+            intakeWrist.setPosition(ActuationConstants.Intake.horizontal);
+        }
+
+
+        if (map.dcMotor.contains("leftDeposit")) {
+            leftDeposit = map.dcMotor.get("leftDeposit");
+
+            leftDeposit.setPower(1.0);
+            leftDeposit.setTargetPosition(ActuationConstants.Deposit.min);
+            leftDeposit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+        if (map.dcMotor.contains("rightDeposit")) {
+            rightDeposit = map.dcMotor.get("rightDeposit");
+
+            rightDeposit.setPower(1.0);
+            rightDeposit.setTargetPosition(ActuationConstants.Deposit.min);
+            rightDeposit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
+        if (map.servo.contains("depositWrist")) {
+            depositWrist = map.servo.get("depositWrist");
+            depositWrist.setPosition(ActuationConstants.Deposit.transfer);
+        }
+        if (map.servo.contains("depositor")) {
+            depositor = map.servo.get("depositor");
+            depositor.setPosition(ActuationConstants.Deposit.open);
+        }
+
         dashboard = FtcDashboard.getInstance();
     }
 
@@ -95,6 +168,95 @@ public class Actuation {
 
         slowModeToggle = toggleSlowMode;
         fieldCentricToggle = toggleFieldCentric;
+    }
+    public static void intakeExtend(int pos) {
+        leftIntake.setTargetPosition(pos);
+        rightIntake.setTargetPosition(pos);
+    }
+
+    public static void toggleIntakeExtend(boolean input) {
+        if (input && intakeExtendToggle) {
+            intakeExtend = !intakeExtend;
+
+            if (intakeExtend) intakeExtend(ActuationConstants.Intake.max);
+            else intakeExtend(ActuationConstants.Intake.min);
+        }
+        intakeExtendToggle = input;
+    }
+
+    public static void setIntakeWrist(double pos) {
+        intakeWrist.setPosition(pos);
+    }
+
+    public static void setIntakeDown(double pos) {
+        intakeDown.setPosition(pos);
+    }
+
+    public static void toggleIntakeDown(boolean input) {
+        if (input && intakeDownToggle){
+            isIntakeDown = !isIntakeDown;
+
+            if (isIntakeDown) setIntakeDown(ActuationConstants.Intake.down);
+            else setIntakeDown(ActuationConstants.Intake.up);
+        }
+        intakeDownToggle = input;
+    }
+
+    public static void setIntake(double pos) {
+        intake.setPosition(pos);
+    }
+
+    public static void toggleIntake(boolean input) {
+        if (input && intakeClawToggle) {
+            intakeClaw = !intakeClaw;
+
+            if (intakeClaw) setIntake(ActuationConstants.Intake.closed);
+            else setIntake(ActuationConstants.Intake.open);
+        }
+        intakeClawToggle = input;
+    }
+
+    public static void depositExtend(int pos) {
+        leftIntake.setTargetPosition(pos);
+        rightIntake.setTargetPosition(pos);
+    }
+
+    public static void toggleDepositExtension(boolean input) {
+        if (input && depositExtendToggle){
+            depositExtended = !depositExtended;
+
+            if (depositExtended) depositExtend(ActuationConstants.Deposit.max);
+            else depositExtend(ActuationConstants.Deposit.min);
+        }
+        depositExtendToggle = input;
+    }
+
+    public static void setDepositWrist(double pos) {
+        depositWrist.setPosition(pos);
+    }
+
+    public static void toggleDespoitWrist(boolean input) {
+        if (input && depositWristToggle) {
+            depositWristPos = !depositWristPos;
+
+            if (depositWristPos) setDepositWrist(ActuationConstants.Deposit.deposit);
+            else setDepositWrist(ActuationConstants.Deposit.transfer);
+        }
+        depositWristToggle = input;
+    }
+
+    public static void setDepositor(double pos) {
+        depositor.setPosition(pos);
+    }
+
+    public static void toggleDepositor(boolean input) {
+        if (input && depositClawToggle) {
+            depositClaw = !depositClaw;
+
+            if (depositClaw) setDepositor(ActuationConstants.Deposit.closed);
+            setDepositor(ActuationConstants.Deposit.open);
+        }
+        depositClawToggle = input;
     }
 
 //    public static void setLeds(RevBlinkinLedDriver.BlinkinPattern pattern) {

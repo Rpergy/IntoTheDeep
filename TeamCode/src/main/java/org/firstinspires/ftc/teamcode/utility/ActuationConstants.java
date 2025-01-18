@@ -16,6 +16,40 @@ public class ActuationConstants {
     }
 
     @Config
+    public static class Intake {
+        // extension
+        public static int max = 1000;
+        public static int min = 0;
+
+        // claw
+        public static double open = 0.0;
+        public static double closed = 0.0;
+
+        // linear actuator
+        public static double up = 0.0;
+        public static double down = 0.0;
+
+        // wrists
+        public static double horizontal = 0.0;
+        public static double vertical = 0.0;
+    }
+
+    @Config
+    public static class Deposit {
+        // extension
+        public static int max = 1000;
+        public static int min = 0;
+
+        // claw
+        public static double open = 0.0;
+        public static double closed = 0.0;
+
+        // wrist
+        public static double transfer = 0.0;
+        public static double deposit = 0.0;
+    }
+
+    @Config
     public static class Drivetrain {
         public static final double ticksPerRev = 2000;
 
