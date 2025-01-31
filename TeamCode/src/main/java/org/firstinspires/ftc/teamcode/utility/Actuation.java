@@ -37,6 +37,8 @@ public class Actuation {
     private static boolean depositExtended = false;
     private static boolean depositWristToggle = false;
     private static boolean depositWristPos = false;
+    private static boolean depositFlipToggle = false;
+    private static boolean depositFlipped = false;
     private static boolean depositClawToggle = false;
     private static boolean depositClaw = false;
 
@@ -46,7 +48,7 @@ public class Actuation {
     public static DcMotor leftIntake, rightIntake;
 
     public static Servo intake, intakeWrist, intakeDown;
-    public static Servo depositWrist, depositor;
+    public static Servo depositWrist, depositFlip, depositor;
 
 //    private static RevBlinkinLedDriver leds;
 
@@ -62,25 +64,24 @@ public class Actuation {
 //        leds = map.get(RevBlinkinLedDriver.class, "leds");
 //        leds.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
 
-        frontLeft  = map.get(DcMotor.class, "frontLeft");
-        frontRight = map.get(DcMotor.class, "frontRight");
-        backLeft = map.get(DcMotor.class, "backLeft");
-        backRight = map.get(DcMotor.class, "backRight");
-
-//        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-//        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-//        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        if (map.dcMotor.contains("frontLeft")) {
+            frontLeft = map.get(DcMotor.class, "frontLeft");
+            frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        }
+        if (map.dcMotor.contains("frontRight")) {
+            frontRight = map.get(DcMotor.class, "frontRight");
+            frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+        if (map.dcMotor.contains("backLeft")) {
+            backLeft = map.get(DcMotor.class, "backLeft");
+            backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        }
+        if (map.dcMotor.contains("backRight")) {
+            backRight = map.get(DcMotor.class, "backRight");
+            backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
 
         if (map.dcMotor.contains("leftIntake")) {
             leftIntake = map.dcMotor.get("leftIntake");
@@ -88,7 +89,9 @@ public class Actuation {
             leftIntake.setPower(1.0);
             leftIntake.setTargetPosition(ActuationConstants.Intake.min);
             leftIntake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftIntake.setDirection(DcMotorSimple.Direction.REVERSE);
         }
+
         if (map.dcMotor.contains("rightIntake")) {
             rightIntake = map.dcMotor.get("rightIntake");
 
@@ -101,10 +104,12 @@ public class Actuation {
             intake = map.servo.get("intake");
             intake.setPosition(ActuationConstants.Intake.open);
         }
+
         if (map.servo.contains("intakeDown")) {
             intakeDown = map.servo.get("intakeDown");
             intakeDown.setPosition(ActuationConstants.Intake.up);
         }
+
         if (map.servo.contains("intakeWrist")) {
             intakeWrist = map.servo.get("intakeWrist");
             intakeWrist.setPosition(ActuationConstants.Intake.horizontal);
@@ -128,7 +133,11 @@ public class Actuation {
 
         if (map.servo.contains("depositWrist")) {
             depositWrist = map.servo.get("depositWrist");
-            depositWrist.setPosition(ActuationConstants.Deposit.transfer);
+            depositWrist.setPosition(ActuationConstants.Deposit.wristTransfer);
+        }
+        if (map.servo.contains("depositFlip")) {
+            depositFlip = map.servo.get("depositFlip");
+            depositFlip.setPosition(ActuationConstants.Deposit.flipTransfer);
         }
         if (map.servo.contains("depositor")) {
             depositor = map.servo.get("depositor");
@@ -170,6 +179,7 @@ public class Actuation {
         fieldCentricToggle = toggleFieldCentric;
     }
     public static void intakeExtend(int pos) {
+        pos = Math.min(ActuationConstants.Intake.max, pos);
         leftIntake.setTargetPosition(pos);
         rightIntake.setTargetPosition(pos);
     }
@@ -217,8 +227,8 @@ public class Actuation {
     }
 
     public static void depositExtend(int pos) {
-        leftIntake.setTargetPosition(pos);
-        rightIntake.setTargetPosition(pos);
+        leftDeposit.setTargetPosition(pos);
+        rightDeposit.setTargetPosition(pos);
     }
 
     public static void toggleDepositExtension(boolean input) {
@@ -239,10 +249,24 @@ public class Actuation {
         if (input && depositWristToggle) {
             depositWristPos = !depositWristPos;
 
-            if (depositWristPos) setDepositWrist(ActuationConstants.Deposit.deposit);
-            else setDepositWrist(ActuationConstants.Deposit.transfer);
+            if (depositWristPos) setDepositWrist(ActuationConstants.Deposit.wristDeposit);
+            else setDepositWrist(ActuationConstants.Deposit.wristTransfer);
         }
         depositWristToggle = input;
+    }
+
+    public static void setDepositFlip(double pos) {
+        depositFlip.setPosition(pos);
+    }
+
+    public static void toggleDepositFlip(boolean input) {
+        if (input && depositFlipToggle) {
+            depositFlipped = !depositFlipped;
+
+            if (depositFlipped) setDepositFlip(ActuationConstants.Deposit.flipDeposit);
+            else setDepositFlip(ActuationConstants.Deposit.flipTransfer);
+        }
+        depositFlipToggle = input;
     }
 
     public static void setDepositor(double pos) {

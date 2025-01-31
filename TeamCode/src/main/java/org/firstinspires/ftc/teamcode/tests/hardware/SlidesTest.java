@@ -3,14 +3,14 @@ package org.firstinspires.ftc.teamcode.tests.hardware;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.utility.Actuation;
 
-@TeleOp(group="tests", name="Deposit Test")
+@TeleOp(name="Slides Test", group="tests")
 @Config
-public class DepositTest extends OpMode {
-    public static float wristPos, flipPos, depositorPos;
+public class SlidesTest extends OpMode {
+    public static int intakeLen;
+    public static int depositLen;
 
     @Override
     public void init() {
@@ -19,8 +19,7 @@ public class DepositTest extends OpMode {
 
     @Override
     public void loop() {
-        Actuation.setDepositWrist(wristPos);
-        Actuation.setDepositFlip(flipPos);
-        Actuation.setDepositor(depositorPos);
+//        Actuation.intakeExtend(intakeLen);
+        Actuation.depositExtend(depositLen);
     }
 }

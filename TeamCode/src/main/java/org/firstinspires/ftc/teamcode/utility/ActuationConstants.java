@@ -18,7 +18,7 @@ public class ActuationConstants {
     @Config
     public static class Intake {
         // extension
-        public static int max = 1000;
+        public static int max = 1800;
         public static int min = 0;
 
         // claw
@@ -45,8 +45,12 @@ public class ActuationConstants {
         public static double closed = 0.0;
 
         // wrist
-        public static double transfer = 0.0;
-        public static double deposit = 0.0;
+        public static double wristTransfer = 0.0;
+        public static double wristDeposit = 0.0;
+
+        // flip
+        public static double flipTransfer = 0.0;
+        public static double flipDeposit = 0.0;
     }
 
     @Config
