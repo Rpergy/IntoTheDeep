@@ -22,16 +22,22 @@ public class ActuationConstants {
         public static int min = 0;
 
         // claw
-        public static double open = 0.0;
-        public static double closed = 0.0;
+        public static double open = 0.87;
+        public static double closed = 1.0;
 
-        // linear actuator
-        public static double up = 0.0;
-        public static double down = 0.0;
+        // arm
+        public static double armIntake = 0.0;
+        public static double armTransfer = 0.7;
+        public static double armInit = 1.0;
 
-        // wrists
-        public static double horizontal = 0.0;
-        public static double vertical = 0.0;
+        //wrist
+        public static double wristIntake = 0.0;
+        public static double wristTransfer = 0.9;
+        public static double wristInit = 0.0;
+
+        // rotate
+        public static double horizontal = 0.95;
+        public static double vertical = 0.4;
     }
 
     @Config
@@ -39,18 +45,20 @@ public class ActuationConstants {
         // extension
         public static int max = 1000;
         public static int min = 0;
+        public static int highChamber = 900;
+        public static int lowChamber = 400;
 
         // claw
-        public static double open = 0.0;
-        public static double closed = 0.0;
+        public static double open = 0.9;
+        public static double closed = 0.75;
 
         // wrist
-        public static double wristTransfer = 0.0;
+        public static double wristTransfer = 0.5;
         public static double wristDeposit = 0.0;
 
         // flip
         public static double flipTransfer = 0.0;
-        public static double flipDeposit = 0.0;
+        public static double flipDeposit = 0.6;
     }
 
     @Config

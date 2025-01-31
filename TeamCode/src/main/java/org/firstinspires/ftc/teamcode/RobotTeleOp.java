@@ -18,7 +18,7 @@ public class RobotTeleOp extends OpMode {
         Actuation.drive(gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.left_stick_x);
 
         Actuation.toggleIntakeExtend(gamepad1.triangle);
-        Actuation.toggleIntakeDown(gamepad1.circle);
+        Actuation.toggleIntakeRotate(gamepad1.circle);
         Actuation.toggleIntake(gamepad1.cross);
 
         Actuation.toggleDepositExtension(gamepad2.triangle);

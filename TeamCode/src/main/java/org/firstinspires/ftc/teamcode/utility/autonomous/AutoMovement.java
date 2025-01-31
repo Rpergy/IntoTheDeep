@@ -55,6 +55,10 @@ public class AutoMovement {
         dashboard = FtcDashboard.getInstance();
     }
 
+    public static void setStartPos(Pose start) {
+        robotPose = start;
+    }
+
     /**
      * Updates the robot's pose based off of encoder values from odometry
      */

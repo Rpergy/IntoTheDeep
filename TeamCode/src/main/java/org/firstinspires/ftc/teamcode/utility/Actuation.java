@@ -1,23 +1,13 @@
 package org.firstinspires.ftc.teamcode.utility;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-import com.qualcomm.hardware.rev.RevColorSensorV3;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.utility.autonomous.AutoMovement;
-import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
-
-import java.util.Arrays;
 
 public class Actuation {
     public static boolean slowMode = false;
@@ -30,8 +20,13 @@ public class Actuation {
     private static boolean intakeExtend = false;
     private static boolean intakeClawToggle = false;
     private static boolean intakeClaw = false;
-    private static boolean intakeDownToggle = false;
-    private static boolean isIntakeDown = false;
+    private static boolean intakeRotateToggle = false;
+    private static boolean intakeVertical = false;
+    private static boolean intakeWristToggle = false;
+    private static boolean intakeWristDown = false;
+    private static boolean intakeArmToggle = false;
+    private static boolean intakeArmDown = false;
+
 
     private static boolean depositExtendToggle = false;
     private static boolean depositExtended = false;
@@ -47,7 +42,7 @@ public class Actuation {
     public static DcMotor leftDeposit, rightDeposit;
     public static DcMotor leftIntake, rightIntake;
 
-    public static Servo intake, intakeWrist, intakeDown;
+    public static Servo intake, intakeWrist, intakeRotate, intakeArm;
     public static Servo depositWrist, depositFlip, depositor;
 
 //    private static RevBlinkinLedDriver leds;
@@ -83,53 +78,57 @@ public class Actuation {
             backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
-        if (map.dcMotor.contains("leftIntake")) {
-            leftIntake = map.dcMotor.get("leftIntake");
+//        if (map.dcMotor.contains("leftIntake")) {
+//            leftIntake = map.dcMotor.get("leftIntake");
+//
+//            leftIntake.setPower(1.0);
+//            leftIntake.setTargetPosition(ActuationConstants.Intake.min);
+//            leftIntake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            leftIntake.setDirection(DcMotorSimple.Direction.REVERSE);
+//        }
+//
+//        if (map.dcMotor.contains("rightIntake")) {
+//            rightIntake = map.dcMotor.get("rightIntake");
+//
+//            rightIntake.setPower(1.0);
+//            rightIntake.setTargetPosition(ActuationConstants.Intake.min);
+//            rightIntake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        }
 
-            leftIntake.setPower(1.0);
-            leftIntake.setTargetPosition(ActuationConstants.Intake.min);
-            leftIntake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            leftIntake.setDirection(DcMotorSimple.Direction.REVERSE);
-        }
-
-        if (map.dcMotor.contains("rightIntake")) {
-            rightIntake = map.dcMotor.get("rightIntake");
-
-            rightIntake.setPower(1.0);
-            rightIntake.setTargetPosition(ActuationConstants.Intake.min);
-            rightIntake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
-
-        if (map.servo.contains("intake")) {
-            intake = map.servo.get("intake");
-            intake.setPosition(ActuationConstants.Intake.open);
-        }
-
-        if (map.servo.contains("intakeDown")) {
-            intakeDown = map.servo.get("intakeDown");
-            intakeDown.setPosition(ActuationConstants.Intake.up);
-        }
-
-        if (map.servo.contains("intakeWrist")) {
-            intakeWrist = map.servo.get("intakeWrist");
-            intakeWrist.setPosition(ActuationConstants.Intake.horizontal);
-        }
-
-
-        if (map.dcMotor.contains("leftDeposit")) {
-            leftDeposit = map.dcMotor.get("leftDeposit");
-
-            leftDeposit.setPower(1.0);
-            leftDeposit.setTargetPosition(ActuationConstants.Deposit.min);
-            leftDeposit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
-        if (map.dcMotor.contains("rightDeposit")) {
-            rightDeposit = map.dcMotor.get("rightDeposit");
-
-            rightDeposit.setPower(1.0);
-            rightDeposit.setTargetPosition(ActuationConstants.Deposit.min);
-            rightDeposit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
+//        if (map.servo.contains("intake")) {
+//            intake = map.servo.get("intake");
+//            intake.setPosition(ActuationConstants.Intake.closed);
+//        }
+//
+//        if (map.servo.contains("intakeRotate")) {
+//            intakeRotate = map.servo.get("intakeRotate");
+//            intakeRotate.setPosition(ActuationConstants.Intake.vertical);
+//        }
+//
+//        if (map.servo.contains("intakeWrist")) {
+//            intakeWrist = map.servo.get("intakeWrist");
+//            intakeWrist.setPosition(ActuationConstants.Intake.wristInit);
+//        }
+//
+//        if (map.servo.contains("intakeArm")) {
+//            intakeArm = map.servo.get("intakeArm");
+//            intakeArm.setPosition(ActuationConstants.Intake.armInit);
+//        }
+//
+//        if (map.dcMotor.contains("leftDeposit")) {
+//            leftDeposit = map.dcMotor.get("leftDeposit");
+//
+//            leftDeposit.setPower(1.0);
+//            leftDeposit.setTargetPosition(ActuationConstants.Deposit.min);
+//            leftDeposit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        }
+//        if (map.dcMotor.contains("rightDeposit")) {
+//            rightDeposit = map.dcMotor.get("rightDeposit");
+//
+//            rightDeposit.setPower(1.0);
+//            rightDeposit.setTargetPosition(ActuationConstants.Deposit.min);
+//            rightDeposit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        }
 
         if (map.servo.contains("depositWrist")) {
             depositWrist = map.servo.get("depositWrist");
@@ -141,7 +140,7 @@ public class Actuation {
         }
         if (map.servo.contains("depositor")) {
             depositor = map.servo.get("depositor");
-            depositor.setPosition(ActuationConstants.Deposit.open);
+            depositor.setPosition(ActuationConstants.Deposit.closed);
         }
 
         dashboard = FtcDashboard.getInstance();
@@ -178,6 +177,8 @@ public class Actuation {
         slowModeToggle = toggleSlowMode;
         fieldCentricToggle = toggleFieldCentric;
     }
+
+    // INTAKE EXTENSION
     public static void intakeExtend(int pos) {
         pos = Math.min(ActuationConstants.Intake.max, pos);
         leftIntake.setTargetPosition(pos);
@@ -194,24 +195,49 @@ public class Actuation {
         intakeExtendToggle = input;
     }
 
+    // INTAKE WRIST
     public static void setIntakeWrist(double pos) {
         intakeWrist.setPosition(pos);
     }
+    public static void toggleIntakeWrist(boolean input) {
+        if (input && intakeWristToggle){
+            intakeWristDown = !intakeWristDown;
 
-    public static void setIntakeDown(double pos) {
-        intakeDown.setPosition(pos);
-    }
-
-    public static void toggleIntakeDown(boolean input) {
-        if (input && intakeDownToggle){
-            isIntakeDown = !isIntakeDown;
-
-            if (isIntakeDown) setIntakeDown(ActuationConstants.Intake.down);
-            else setIntakeDown(ActuationConstants.Intake.up);
+            if (intakeWristDown) setIntakeWrist(ActuationConstants.Intake.wristIntake);
+            else setIntakeWrist(ActuationConstants.Intake.wristTransfer);
         }
-        intakeDownToggle = input;
+        intakeWristDown = input;
     }
 
+    // INTAKE ROTATE
+    public static void setIntakeRotate(double pos) {
+        intakeRotate.setPosition(pos);
+    }
+
+    public static void toggleIntakeRotate(boolean input) {
+        if (input && intakeRotateToggle){
+            intakeVertical = !intakeVertical;
+
+            if (intakeVertical) setIntakeRotate(ActuationConstants.Intake.vertical);
+            else setIntakeRotate(ActuationConstants.Intake.horizontal);
+        }
+        intakeRotateToggle = input;
+    }
+
+    // INTAKE ARM
+    public static void setIntakeArm(double pos) { intakeArm.setPosition(pos); }
+
+    public static void toggleIntakeArm(boolean input) {
+        if (input && intakeArmToggle){
+            intakeArmDown = !intakeArmDown;
+
+            if (intakeArmDown) setIntakeArm(ActuationConstants.Intake.armIntake);
+            else setIntakeArm(ActuationConstants.Intake.armTransfer);
+        }
+        intakeArmToggle = input;
+    }
+
+    // INTAKE CLAW
     public static void setIntake(double pos) {
         intake.setPosition(pos);
     }
@@ -226,6 +252,7 @@ public class Actuation {
         intakeClawToggle = input;
     }
 
+    // DEPOSIT EXTENSION
     public static void depositExtend(int pos) {
         leftDeposit.setTargetPosition(pos);
         rightDeposit.setTargetPosition(pos);
@@ -241,6 +268,7 @@ public class Actuation {
         depositExtendToggle = input;
     }
 
+    // DEPOSIT WRIST
     public static void setDepositWrist(double pos) {
         depositWrist.setPosition(pos);
     }
@@ -255,6 +283,7 @@ public class Actuation {
         depositWristToggle = input;
     }
 
+    // DEPOSIT FLIP
     public static void setDepositFlip(double pos) {
         depositFlip.setPosition(pos);
     }
@@ -269,6 +298,7 @@ public class Actuation {
         depositFlipToggle = input;
     }
 
+    // DEPOSIT CLAW
     public static void setDepositor(double pos) {
         depositor.setPosition(pos);
     }
@@ -281,6 +311,17 @@ public class Actuation {
             setDepositor(ActuationConstants.Deposit.open);
         }
         depositClawToggle = input;
+    }
+
+    public static void autoDeposit() {
+        setDepositFlip(ActuationConstants.Deposit.flipDeposit);
+        setDepositWrist(ActuationConstants.Deposit.wristDeposit);
+        setDepositor(ActuationConstants.Deposit.open);
+    }
+
+    public static void autoTransfer() {
+        setDepositFlip(ActuationConstants.Deposit.flipTransfer);
+        setDepositWrist(ActuationConstants.Deposit.wristTransfer);
     }
 
 //    public static void setLeds(RevBlinkinLedDriver.BlinkinPattern pattern) {
