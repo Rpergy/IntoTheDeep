@@ -19,7 +19,7 @@ public class SlidesTest extends OpMode {
 
     @Override
     public void loop() {
-//        Actuation.intakeExtend(intakeLen);
-        Actuation.depositExtend(depositLen);
+        Actuation.intakeExtend(intakeLen);
+//        Actuation.depositExtend(depositLen);
     }
 }

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.utility.dataTypes;
 
+import androidx.annotation.NonNull;
+
 public class Pose {
     public double x, y, heading;
 
@@ -35,8 +37,17 @@ public class Pose {
         return (p.x >= x - range && p.x <= x + range) && (p.y >= y - range && p.y <= y + range);
     }
 
+    public Pose augment(Pose newPose) {
+        return new Pose(x + newPose.x, y + newPose.y, heading + newPose.heading);
+    }
+
+    @NonNull
     @Override
     public String toString() {
         return "X: " + x + ", Y: " + y + ", H: " + heading;
+    }
+
+    public boolean equals(Pose other) {
+        return (x == other.x) && (y == other.y) && (heading == other.heading);
     }
 }

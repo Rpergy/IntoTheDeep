@@ -13,9 +13,9 @@ import org.firstinspires.ftc.teamcode.utility.ActuationConstants;
 
 import java.util.List;
 
-@TeleOp(group = "tests", name = "Position Test")
+@TeleOp(group = "tests", name = "Localization Test")
 @Config
-public class PositionTest extends OpMode {
+public class LocalizationTest extends OpMode {
     BHI260IMU imu;
 
     private DcMotor frontLeft;
@@ -60,7 +60,7 @@ public class PositionTest extends OpMode {
         wheel_circ = ActuationConstants.Drivetrain.wheel_circ; // inches
         track_width = ActuationConstants.Drivetrain.track_width; // in distance between drive wheels
         forward_offset = ActuationConstants.Drivetrain.forward_offset; // in distance from center of robot to perp wheel
-        ticksPerRev = 8192;
+        ticksPerRev = 2000;
 
         lateral_multiplier = ActuationConstants.Drivetrain.lateralMultiplier; //1.010112392;
         center_multiplier = ActuationConstants.Drivetrain.centerMultiplier; //2.05759425438;
@@ -75,7 +75,6 @@ public class PositionTest extends OpMode {
 
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
 
 //        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -97,7 +96,7 @@ public class PositionTest extends OpMode {
         }
 
         double ticks_left = frontLeft.getCurrentPosition();
-        double ticks_right = frontRight.getCurrentPosition();
+        double ticks_right = -frontRight.getCurrentPosition();
         double ticks_back = backRight.getCurrentPosition();
 
         start_time = System.nanoTime();

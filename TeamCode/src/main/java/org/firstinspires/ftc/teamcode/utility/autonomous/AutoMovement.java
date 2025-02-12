@@ -67,7 +67,7 @@ public class AutoMovement {
             module.clearBulkCache();
         }
 
-        double ticks_left = Actuation.frontLeft.getCurrentPosition();
+        double ticks_left = -Actuation.frontLeft.getCurrentPosition();
         double ticks_right = Actuation.frontRight.getCurrentPosition();
         double ticks_back = Actuation.backRight.getCurrentPosition();
 
@@ -87,9 +87,9 @@ public class AutoMovement {
             dx = dx_center * Math.cos(robotPose.heading) - dx_perpendicular * Math.sin(robotPose.heading);
             dy = dx_center * Math.sin(robotPose.heading) + dx_perpendicular * Math.cos(robotPose.heading);
         }
-        robotPose.x += -1 * dx;
-        robotPose.y += -1 * dy;
-        robotPose.heading += dtheta;
+        robotPose.x += dx;
+        robotPose.y += dy;
+        robotPose.heading += -1 * dtheta;
 
         prev_ticks_back = ticks_back;
         prev_ticks_left = ticks_left;
@@ -283,7 +283,7 @@ public class AutoMovement {
         packet.fieldOverlay().setStroke("white");
         packet.fieldOverlay().strokeLine(robotPose.x, robotPose.y, xs[4], ys[4]);
 
-//        dashboard.sendTelemetryPacket(packet);
+        dashboard.sendTelemetryPacket(packet);
     }
 
     /**

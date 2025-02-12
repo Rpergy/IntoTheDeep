@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.utility;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -8,6 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.utility.autonomous.AutoMovement;
+import org.firstinspires.ftc.teamcode.utility.autonomous.FieldConstants;
+import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
 
 public class Actuation {
     public static boolean slowMode = false;
@@ -19,7 +22,7 @@ public class Actuation {
     private static boolean intakeExtendToggle = false;
     private static boolean intakeExtend = false;
     private static boolean intakeClawToggle = false;
-    private static boolean intakeClaw = false;
+    private static boolean intakeClawOpen = false;
     private static boolean intakeRotateToggle = false;
     private static boolean intakeVertical = false;
     private static boolean intakeWristToggle = false;
@@ -42,8 +45,10 @@ public class Actuation {
     public static DcMotor leftDeposit, rightDeposit;
     public static DcMotor leftIntake, rightIntake;
 
-    public static Servo intake, intakeWrist, intakeRotate, intakeArm;
+    public static Servo intakeClaw, intakeWrist, intakeRotate, intakeArm;
     public static Servo depositWrist, depositFlip, depositor;
+
+    public static ColorSensor color;
 
 //    private static RevBlinkinLedDriver leds;
 
@@ -78,57 +83,57 @@ public class Actuation {
             backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
-//        if (map.dcMotor.contains("leftIntake")) {
-//            leftIntake = map.dcMotor.get("leftIntake");
-//
-//            leftIntake.setPower(1.0);
-//            leftIntake.setTargetPosition(ActuationConstants.Intake.min);
-//            leftIntake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//            leftIntake.setDirection(DcMotorSimple.Direction.REVERSE);
-//        }
-//
-//        if (map.dcMotor.contains("rightIntake")) {
-//            rightIntake = map.dcMotor.get("rightIntake");
-//
-//            rightIntake.setPower(1.0);
-//            rightIntake.setTargetPosition(ActuationConstants.Intake.min);
-//            rightIntake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        }
+        if (map.dcMotor.contains("leftIntake")) {
+            leftIntake = map.dcMotor.get("leftIntake");
 
-//        if (map.servo.contains("intake")) {
-//            intake = map.servo.get("intake");
-//            intake.setPosition(ActuationConstants.Intake.closed);
-//        }
-//
-//        if (map.servo.contains("intakeRotate")) {
-//            intakeRotate = map.servo.get("intakeRotate");
-//            intakeRotate.setPosition(ActuationConstants.Intake.vertical);
-//        }
-//
-//        if (map.servo.contains("intakeWrist")) {
-//            intakeWrist = map.servo.get("intakeWrist");
-//            intakeWrist.setPosition(ActuationConstants.Intake.wristInit);
-//        }
-//
-//        if (map.servo.contains("intakeArm")) {
-//            intakeArm = map.servo.get("intakeArm");
-//            intakeArm.setPosition(ActuationConstants.Intake.armInit);
-//        }
-//
-//        if (map.dcMotor.contains("leftDeposit")) {
-//            leftDeposit = map.dcMotor.get("leftDeposit");
-//
-//            leftDeposit.setPower(1.0);
-//            leftDeposit.setTargetPosition(ActuationConstants.Deposit.min);
-//            leftDeposit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        }
-//        if (map.dcMotor.contains("rightDeposit")) {
-//            rightDeposit = map.dcMotor.get("rightDeposit");
-//
-//            rightDeposit.setPower(1.0);
-//            rightDeposit.setTargetPosition(ActuationConstants.Deposit.min);
-//            rightDeposit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        }
+            leftIntake.setPower(1.0);
+            leftIntake.setTargetPosition(ActuationConstants.Intake.min);
+            leftIntake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
+        if (map.dcMotor.contains("rightIntake")) {
+            rightIntake = map.dcMotor.get("rightIntake");
+
+            rightIntake.setPower(1.0);
+            rightIntake.setTargetPosition(ActuationConstants.Intake.min);
+            rightIntake.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightIntake.setDirection(DcMotorSimple.Direction.REVERSE);
+        }
+
+        if (map.servo.contains("intake")) {
+            intakeClaw = map.servo.get("intake");
+            intakeClaw.setPosition(ActuationConstants.Intake.closed);
+        }
+
+        if (map.servo.contains("intakeRotate")) {
+            intakeRotate = map.servo.get("intakeRotate");
+            intakeRotate.setPosition(ActuationConstants.Intake.vertical);
+        }
+
+        if (map.servo.contains("intakeWrist")) {
+            intakeWrist = map.servo.get("intakeWrist");
+            intakeWrist.setPosition(ActuationConstants.Intake.wristInit);
+        }
+
+        if (map.servo.contains("intakeArm")) {
+            intakeArm = map.servo.get("intakeArm");
+            intakeArm.setPosition(ActuationConstants.Intake.armInit);
+        }
+
+        if (map.dcMotor.contains("leftDeposit")) {
+            leftDeposit = map.dcMotor.get("leftDeposit");
+
+            leftDeposit.setPower(1.0);
+            leftDeposit.setTargetPosition(ActuationConstants.Deposit.min);
+            leftDeposit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+        if (map.dcMotor.contains("rightDeposit")) {
+            rightDeposit = map.dcMotor.get("rightDeposit");
+
+            rightDeposit.setPower(1.0);
+            rightDeposit.setTargetPosition(ActuationConstants.Deposit.min);
+            rightDeposit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
 
         if (map.servo.contains("depositWrist")) {
             depositWrist = map.servo.get("depositWrist");
@@ -147,10 +152,10 @@ public class Actuation {
     }
 
     public static void drive(double move, double turn, double strafe) {
-        frontLeft.setPower(move - turn - strafe);
-        frontRight.setPower(move + turn + strafe);
-        backLeft.setPower(move - turn + strafe);
-        backRight.setPower(move + turn - strafe);
+        frontLeft.setPower(move + turn + strafe);
+        frontRight.setPower(move - turn - strafe);
+        backLeft.setPower(move + turn - strafe);
+        backRight.setPower(move - turn + strafe);
     }
 
     public static void teleDrive(boolean toggleSlowMode, boolean toggleFieldCentric, double move, double turn, double strafe) {
@@ -162,16 +167,16 @@ public class Actuation {
             double newMove = strafe*Math.sin(-AutoMovement.robotPose.heading)+move*Math.cos(-AutoMovement.robotPose.heading);
             double newStrafe = strafe*Math.cos(-AutoMovement.robotPose.heading)-move*Math.sin(-AutoMovement.robotPose.heading);
 
-            frontLeft.setPower((newMove-turn-newStrafe) * multip);
-            backLeft.setPower((newMove+turn-newStrafe) * multip);
-            frontRight.setPower((newMove+turn+newStrafe) * multip);
-            backRight.setPower((newMove-turn+newStrafe) * multip);
+            frontLeft.setPower((newMove+turn+newStrafe) * multip);
+            backLeft.setPower((newMove-turn+newStrafe) * multip);
+            frontRight.setPower((newMove+turn-newStrafe) * multip);
+            backRight.setPower((newMove-turn-newStrafe) * multip);
         }
         else {
-            frontLeft.setPower((move-strafe-turn) * multip);
-            backLeft.setPower((move+strafe-turn) * multip);
-            frontRight.setPower((move+strafe+turn) * multip);
-            backRight.setPower((move-strafe+turn) * multip);
+            frontLeft.setPower((move+strafe+turn) * multip);
+            backLeft.setPower((move-strafe+turn) * multip);
+            frontRight.setPower((move-strafe-turn) * multip);
+            backRight.setPower((move+strafe-turn) * multip);
         }
 
         slowModeToggle = toggleSlowMode;
@@ -186,11 +191,19 @@ public class Actuation {
     }
 
     public static void toggleIntakeExtend(boolean input) {
-        if (input && intakeExtendToggle) {
+        if (input && !intakeExtendToggle) {
             intakeExtend = !intakeExtend;
 
-            if (intakeExtend) intakeExtend(ActuationConstants.Intake.max);
-            else intakeExtend(ActuationConstants.Intake.min);
+            if (intakeExtend) {
+                intakeExtend(ActuationConstants.Intake.max);
+                setIntakeArm(ActuationConstants.Intake.armInbound);
+                setIntakeWrist(ActuationConstants.Intake.wristIntake);
+            }
+            else {
+                intakeExtend(ActuationConstants.Intake.min);
+                setIntakeArm(ActuationConstants.Intake.armTransfer);
+                setIntakeWrist(ActuationConstants.Intake.wristTransfer);
+            }
         }
         intakeExtendToggle = input;
     }
@@ -238,16 +251,16 @@ public class Actuation {
     }
 
     // INTAKE CLAW
-    public static void setIntake(double pos) {
-        intake.setPosition(pos);
+    public static void setIntakeClaw(double pos) {
+        intakeClaw.setPosition(pos);
     }
 
     public static void toggleIntake(boolean input) {
         if (input && intakeClawToggle) {
-            intakeClaw = !intakeClaw;
+            intakeClawOpen = !intakeClawOpen;
 
-            if (intakeClaw) setIntake(ActuationConstants.Intake.closed);
-            else setIntake(ActuationConstants.Intake.open);
+            if (intakeClawOpen) setIntakeClaw(ActuationConstants.Intake.closed);
+            else setIntakeClaw(ActuationConstants.Intake.open);
         }
         intakeClawToggle = input;
     }
@@ -273,7 +286,7 @@ public class Actuation {
         depositWrist.setPosition(pos);
     }
 
-    public static void toggleDespoitWrist(boolean input) {
+    public static void toggleDepositWrist(boolean input) {
         if (input && depositWristToggle) {
             depositWristPos = !depositWristPos;
 
@@ -313,15 +326,64 @@ public class Actuation {
         depositClawToggle = input;
     }
 
-    public static void autoDeposit() {
+    // collection of methods that line up the deposit for cleaner autonomous usage
+    public static void autoDeposit() { // sets to deposit pos
         setDepositFlip(ActuationConstants.Deposit.flipDeposit);
         setDepositWrist(ActuationConstants.Deposit.wristDeposit);
-        setDepositor(ActuationConstants.Deposit.open);
     }
 
-    public static void autoTransfer() {
+    public static void autoDepositTransfer() { // sets to transfer pos
         setDepositFlip(ActuationConstants.Deposit.flipTransfer);
         setDepositWrist(ActuationConstants.Deposit.wristTransfer);
+    }
+
+    // collection of methods that line up the intake for cleaner autonomous usage
+    public static void autoIntake() { // sets to intake pos
+        setIntakeRotate(ActuationConstants.Intake.vertical);
+        setIntakeArm(ActuationConstants.Intake.armIntake);
+        setIntakeWrist(ActuationConstants.Intake.wristIntake);
+    }
+
+    public static void autoIntakeTransfer() { // sets to transfer pos
+        setIntakeRotate(ActuationConstants.Intake.vertical);
+        setIntakeArm(ActuationConstants.Intake.armTransfer);
+        setIntakeWrist(ActuationConstants.Intake.wristTransfer);
+    }
+
+    public static boolean scanSamples(Pose targetColor, int step) {
+        int extension = ActuationConstants.Intake.min;
+        Pose reading = new Pose(color.red(), color.blue(), color.green());
+        while (!reading.withinRange(targetColor, 10)) {
+            if (extension >= ActuationConstants.Intake.max) {
+                return false;
+            }
+            extension += step;
+            intakeExtend(extension);
+            reading = new Pose(color.red(), color.blue(), color.green());
+        }
+        return true;
+    }
+
+    // Toggles between p1 and p2 dropoff/pickup for autonomous
+    public static void toggleBlueDeliver() {
+        if (FieldConstants.Blue.deliverPoint.equals(FieldConstants.Blue.observation1)) {
+            FieldConstants.Blue.deliverPoint = FieldConstants.Blue.observation2;
+            FieldConstants.Blue.pickupPoint = FieldConstants.Blue.observation1;
+        }
+        else {
+            FieldConstants.Blue.deliverPoint = FieldConstants.Blue.observation1;
+            FieldConstants.Blue.pickupPoint = FieldConstants.Blue.observation2;
+        }
+    }
+    public static void toggleRedDeliver() {
+        if (FieldConstants.Red.deliverPoint.equals(FieldConstants.Red.observation1)) {
+            FieldConstants.Red.deliverPoint = FieldConstants.Red.observation2;
+            FieldConstants.Red.pickupPoint = FieldConstants.Red.observation1;
+        }
+        else {
+            FieldConstants.Red.deliverPoint = FieldConstants.Red.observation1;
+            FieldConstants.Red.pickupPoint = FieldConstants.Red.observation2;
+        }
     }
 
 //    public static void setLeds(RevBlinkinLedDriver.BlinkinPattern pattern) {

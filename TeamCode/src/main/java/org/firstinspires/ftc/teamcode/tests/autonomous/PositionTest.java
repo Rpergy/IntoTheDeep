@@ -1,5 +1,6 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.tests.autonomous;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,20 +11,24 @@ import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
 
 import java.util.ArrayList;
 
-@TeleOp(name="TeleOp")
-public class RobotTeleOp extends OpMode {
+@TeleOp(name="Position Viewer", group = "tests")
+@Config
+public class PositionTest extends OpMode {
+    public static double x, y, heading;
+
     @Override
     public void init() {
         Actuation.setup(hardwareMap, telemetry);
-        AutoMovement.setStartPos(new Pose(-36, 65, Math.toRadians(-90)));
+        x = 0;
+        y = 0;
+        heading = 0;
+
+        AutoMovement.setStartPos(new Pose(x, y, Math.toRadians(heading)));
     }
 
     @Override
     public void loop() {
-        Actuation.drive(-gamepad1.left_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x);
-
-        AutoMovement.updatePosition();
+        AutoMovement.setStartPos(new Pose(x, y, Math.toRadians(heading)));
         AutoMovement.displayPosition();
-        telemetry.addData("Pose", AutoMovement.robotPose);
     }
 }

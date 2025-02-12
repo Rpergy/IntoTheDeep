@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.utility;
 
 import com.acmerobotics.dashboard.config.Config;
 
+import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
+
 public class ActuationConstants {
     @Config
     public static class Autonomous {
@@ -16,6 +18,13 @@ public class ActuationConstants {
     }
 
     @Config
+    public static class Colors {
+        public static Pose red = new Pose(0, 0, 0);
+        public static Pose blue = new Pose(0, 0, 0);
+        public static Pose yellow = new Pose(0, 0, 0);
+    }
+
+    @Config
     public static class Intake {
         // extension
         public static int max = 1800;
@@ -27,6 +36,7 @@ public class ActuationConstants {
 
         // arm
         public static double armIntake = 0.0;
+        public static double armInbound = 0.3;
         public static double armTransfer = 0.7;
         public static double armInit = 1.0;
 
