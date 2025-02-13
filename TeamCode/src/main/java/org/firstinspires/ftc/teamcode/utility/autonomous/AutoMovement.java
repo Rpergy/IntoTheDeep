@@ -125,12 +125,12 @@ public class AutoMovement {
 //        if(movePower > 0) movePower = Math.max(movePower, ActuationConstants.Autonomous.minMoveSpeed);
 //        else movePower = Math.min(movePower, -ActuationConstants.Autonomous.minMoveSpeed);
 
-        double v1 = -movePower + turnPower - strafePower;
-        double v2 = -movePower - turnPower + strafePower;
-        double v3 = -movePower + turnPower + strafePower;
-        double v4 = -movePower - turnPower - strafePower;
+        double v1 = movePower - turnPower + strafePower;
+        double v2 = movePower + turnPower - strafePower;
+        double v3 = movePower - turnPower - strafePower;
+        double v4 = movePower + turnPower + strafePower;
 
-        double voltageComp = 1; //12 / voltageSensor.getVoltage();
+        double voltageComp = 12 / voltageSensor.getVoltage();
 
         Actuation.frontLeft.setPower(v1 * voltageComp);
         Actuation.frontRight.setPower(v2 * voltageComp);

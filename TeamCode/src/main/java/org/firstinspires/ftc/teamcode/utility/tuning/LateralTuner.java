@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.utility.autonomous.AutoMovement;
 @Config
 @TeleOp(name="Lateral Tuner", group="tuning")
 public class LateralTuner extends OpMode {
-    public static double measuredAngle = Math.PI;
+    public static double measuredAngle = 180;
 
     @Override
     public void init() {
@@ -24,9 +24,9 @@ public class LateralTuner extends OpMode {
 
         Actuation.drive(0, gamepad1.right_stick_x, 0);
 
-        telemetry.addData("Heading", AutoMovement.robotPose.heading);
-        telemetry.addData("diff", measuredAngle / AutoMovement.robotPose.heading);
-        telemetry.addData("new lateral multiplier", ActuationConstants.Drivetrain.lateralMultiplier / (measuredAngle/AutoMovement.robotPose.heading));
+        telemetry.addData("Heading", Math.toDegrees(AutoMovement.robotPose.heading));
+        telemetry.addData("diff", Math.toRadians(measuredAngle) / AutoMovement.robotPose.heading);
+        telemetry.addData("new lateral multiplier", ActuationConstants.Drivetrain.lateralMultiplier / (Math.toRadians(measuredAngle)/AutoMovement.robotPose.heading));
         telemetry.update();
     }
 }

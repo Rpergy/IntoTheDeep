@@ -7,14 +7,14 @@ import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
 public class ActuationConstants {
     @Config
     public static class Autonomous {
-        public static double moveSpeed = 0.6;
+        public static double moveSpeed = 0.65;
         public static double turnSpeed = 0.65;
         public static double followDistance = 10;
         //omkar is mucho gay
         public static double minTurnSpeed = 0.04;
-        public static double turnAccelMult = 2.25;
-        public static double moveAccelMult = 0.75;
-        public static double strafeAccelMult = 0.75;
+        public static double turnAccelMult = 3.2;
+        public static double moveAccelMult = 0.7;
+        public static double strafeAccelMult = 0.7;
     }
 
     @Config
@@ -75,9 +75,9 @@ public class ActuationConstants {
     public static class Drivetrain {
         public static final double ticksPerRev = 2000;
 
-        public static double centerMultiplier = 0.3926; // responsible for move
-        public static double lateralMultiplier = 2.5464; // responsible for turn
-        public static double perpendicularMultiplier = -0.3975; // responsible for strafe
+        public static double centerMultiplier = 0.3922; // responsible for move
+        public static double lateralMultiplier = 2.5171; // responsible for turn
+        public static double perpendicularMultiplier = -0.3923; // responsible for strafe
 
         public static double wheel_circ = 10.05; // cm
         public static double track_width = 11.25 * lateralMultiplier; // inches distance between drive wheels (test robot: 11.024)
