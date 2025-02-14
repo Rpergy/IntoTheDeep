@@ -20,16 +20,16 @@ public class LeftBlue extends LinearOpMode {
         waitForStart();
         Trajectory depositPreload = new Trajectory()
                 .lineTo(FieldConstants.Blue.leftShort)
-                .action(Actuation::autoDeposit)
+//                .action(Actuation::autoDeposit)
                 .action(() -> sleep(500))
-                .action(() -> Actuation.depositExtend(ActuationConstants.Deposit.highChamber))
+//                .action(() -> Actuation.depositExtend(ActuationConstants.Deposit.highChamber))
                 .lineTo(FieldConstants.Blue.leftShort.augment(new Pose(0, 0, 0)))
                 .action(() -> sleep(500))
-                .action(() -> Actuation.depositExtend(ActuationConstants.Deposit.lowChamber))
-                .action(() -> Actuation.setDepositor(ActuationConstants.Deposit.open))
-                .lineTo(FieldConstants.Blue.leftShort)
-                .action(() -> Actuation.depositExtend(ActuationConstants.Deposit.min))
-                .action(Actuation::autoDepositTransfer);
+//                .action(() -> Actuation.depositExtend(ActuationConstants.Deposit.lowChamber))
+//                .action(() -> Actuation.setDepositor(ActuationConstants.Deposit.open))
+                .lineTo(FieldConstants.Blue.leftShort);
+//                .action(() -> Actuation.depositExtend(ActuationConstants.Deposit.min))
+//                .action(Actuation::autoDepositTransfer);
 
         Trajectory deliverSample = new Trajectory();
         Trajectory intakeSpecimen = new Trajectory();

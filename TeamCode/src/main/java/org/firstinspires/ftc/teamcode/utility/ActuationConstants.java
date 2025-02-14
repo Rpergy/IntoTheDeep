@@ -8,11 +8,11 @@ public class ActuationConstants {
     @Config
     public static class Autonomous {
         public static double moveSpeed = 0.65;
-        public static double turnSpeed = 0.65;
+        public static double turnSpeed = 0.9;
         public static double followDistance = 10;
         //omkar is mucho gay
         public static double minTurnSpeed = 0.04;
-        public static double turnAccelMult = 3.2;
+        public static double turnAccelMult = 18.58*Math.pow(0.128, turnSpeed);
         public static double moveAccelMult = 0.7;
         public static double strafeAccelMult = 0.7;
     }
@@ -25,50 +25,13 @@ public class ActuationConstants {
     }
 
     @Config
-    public static class Intake {
-        // extension
-        public static int max = 1800;
-        public static int min = 0;
+    public static class Mechanical {
+        public static int slidesInit = 0;
+        public static int tiltInit = 0;
 
-        // claw
-        public static double open = 0.87;
-        public static double closed = 1.0;
-
-        // arm
-        public static double armIntake = 0.0;
-        public static double armInbound = 0.3;
-        public static double armTransfer = 0.7;
-        public static double armInit = 1.0;
-
-        //wrist
-        public static double wristIntake = 0.0;
-        public static double wristTransfer = 0.9;
-        public static double wristInit = 0.0;
-
-        // rotate
-        public static double horizontal = 0.95;
-        public static double vertical = 0.4;
-    }
-
-    @Config
-    public static class Deposit {
-        // extension
-        public static int max = 1000;
-        public static int min = 0;
-        public static int highChamber = 900;
-        public static int lowChamber = 400;
-
-        // claw
-        public static double open = 0.9;
-        public static double closed = 0.75;
-
-        // wrist
-        public static double wristTransfer = 0.5;
-        public static double wristDeposit = 0.0;
-
-        // flip
-        public static double flipTransfer = 0.0;
-        public static double flipDeposit = 0.6;
+        public static double flipInit = 0.0;
+        public static double openClaw = 0.0;
+        public static double closedClaw = 0.0;
     }
 
     @Config

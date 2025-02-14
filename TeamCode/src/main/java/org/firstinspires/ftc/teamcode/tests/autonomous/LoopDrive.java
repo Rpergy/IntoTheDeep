@@ -15,17 +15,17 @@ public class LoopDrive extends LinearOpMode {
     @Override
     public void runOpMode() {
         Actuation.setup(hardwareMap, telemetry);
-        AutoMovement.setStartPos(new Pose(-40, 65, Math.toRadians(-90)));
+        AutoMovement.setStartPos(new Pose(0, 0, Math.toRadians(0)));
 
         waitForStart();
-        Trajectory circle = new Trajectory()
-                .lineTo(new Pose(-40, -50, Math.toRadians(0)))
-                .lineTo(new Pose(45, -50, Math.toRadians(90)))
-                .lineTo(new Pose(45, 50, Math.toRadians(90)))
-                .lineTo(new Pose(-45, 55, Math.toRadians(-90)));
+        Trajectory halfCircle = new Trajectory()
+                .lineTo(new Pose(0, 0, Math.toRadians(90)))
+                .lineTo(new Pose(0, 0, Math.toRadians(180)))
+                .lineTo(new Pose(0, 0, Math.toRadians(270)))
+                .lineTo(new Pose(0, 0, Math.toRadians(360)));
 
         while(opModeIsActive()) {
-            circle.run();
+            halfCircle.run();
         }
     }
 }

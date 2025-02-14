@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.tests.hardware;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.utility.Actuation;
 import org.firstinspires.ftc.teamcode.utility.ActuationConstants;
@@ -10,27 +11,28 @@ import org.firstinspires.ftc.teamcode.utility.ActuationConstants;
 @TeleOp(group="tests", name="Intake Test")
 @Config
 public class IntakeTest extends OpMode {
-    public static double clawPos, armPos, rotPos, wristPos;
-    public static int slidesPos;
+    public DcMotor armTilt, extend;
 
-    int position;
+    public static int tiltPos, extendPos;
 
     @Override
     public void init() {
-        Actuation.setup(hardwareMap, telemetry);
-        clawPos = ActuationConstants.Intake.open;
-        armPos = ActuationConstants.Intake.armInit;
-        rotPos = ActuationConstants.Intake.vertical;
-        wristPos = ActuationConstants.Intake.wristInit;
-        slidesPos = 0;
+        armTilt = hardwareMap.dcMotor.get("armTilt");
+        extend = hardwareMap.dcMotor.get("extend");
+
+        armTilt.setPower(1.0);
+        armTilt.setTargetPosition(tiltPos);
+        armTilt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armTilt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//hi ryan, this is a motivational message to keep you encouraged while programming
+        extend.setPower(1.0);
+        extend.setTargetPosition(extendPos);
+        extend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     @Override
     public void loop() {
-        Actuation.setIntakeArm(armPos);
-        Actuation.setIntakeWrist(wristPos);
-        Actuation.setIntakeRotate(rotPos);
-        Actuation.setIntakeClaw(clawPos);
-        Actuation.intakeExtend(slidesPos);
+        extend.setTargetPosition(extendPos);
+        armTilt.setTargetPosition(tiltPos);
     }
 }

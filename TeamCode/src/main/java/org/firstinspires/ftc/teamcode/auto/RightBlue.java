@@ -33,9 +33,9 @@ public class RightBlue extends LinearOpMode {
 
         Trajectory intakeSubSample = new Trajectory();
         Trajectory deliverSample = new Trajectory()
-                .lineTo(FieldConstants.Blue.deliverPoint)
+                .lineTo(FieldConstants.Blue.deliverPoint);
 //                .action(Actuation::autoIntake)
-                .action(() -> Actuation.setIntakeClaw(ActuationConstants.Intake.closed));
+//                .action(() -> Actuation.setIntakeClaw(ActuationConstants.Intake.closed));
 //                .action(Actuation::autoIntakeTransfer)
 //                .action(Actuation::toggleBlueDeliver);
         Trajectory intakeGroundSample = new Trajectory()
