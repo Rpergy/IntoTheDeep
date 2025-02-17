@@ -108,7 +108,7 @@ public class AutoMovement {
 
         double deltaTheta = MathFunctions.AngleWrap(targetPose.heading - robotPose.heading);
 
-        double turnPower = deltaTheta/Math.PI * turnSpeed;
+        double turnPower = deltaTheta/Math.PI;
 
         double m1 = (Math.tanh(deltaY * ActuationConstants.Autonomous.moveAccelMult) * Math.sin(robotPose.heading)) * movementSpeed;
         double m2 = (Math.tanh(deltaX * ActuationConstants.Autonomous.moveAccelMult) * Math.cos(robotPose.heading)) * movementSpeed;
@@ -119,8 +119,11 @@ public class AutoMovement {
         double movePower = (m1 * Math.abs(m1) + m2 * Math.abs(m2));
         double strafePower =  (s1 * Math.abs(s1) + s2 * Math.abs(s2));
 
-        if(turnPower > 0) turnPower = Math.pow(turnPower, 1.0/ActuationConstants.Autonomous.turnAccelMult) * turnSpeed;
-        else turnPower = -Math.pow(-turnPower, 1.0/ActuationConstants.Autonomous.turnAccelMult) * turnSpeed;
+        if (turnPower >= 0) turnPower = turnSpeed * Math.pow(turnPower, (1.0/ActuationConstants.Autonomous.turnAccelMult));
+        else turnPower = turnSpeed * -Math.pow(-turnPower, (1.0/ActuationConstants.Autonomous.turnAccelMult));
+
+//        if(turnPower > 0) turnPower = Math.pow(turnPower, 1.0/ActuationConstants.Autonomous.turnAccelMult) * turnSpeed;
+//        else turnPower = -Math.pow(-turnPower, 1.0/ActuationConstants.Autonomous.turnAccelMult) * turnSpeed;
 
 //        if(movePower > 0) movePower = Math.max(movePower, ActuationConstants.Autonomous.minMoveSpeed);
 //        else movePower = Math.min(movePower, -ActuationConstants.Autonomous.minMoveSpeed);

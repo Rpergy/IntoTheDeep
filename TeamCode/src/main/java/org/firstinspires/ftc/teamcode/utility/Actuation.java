@@ -37,7 +37,7 @@ public class Actuation {
 
     private static FtcDashboard dashboard;
 
-    private static Telemetry telemetry;
+    public static Telemetry telemetry;
 
     public static void setup(HardwareMap map, Telemetry tel) {
         AutoMovement.setup(map, telemetry);

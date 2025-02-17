@@ -19,20 +19,15 @@ public class LoopDrive extends LinearOpMode {
         AutoMovement.setStartPos(new Pose(0, 0, Math.toRadians(0)));
 
         waitForStart();
-        Trajectory circle = new Trajectory()
-                .lineTo(new Pose(0, 0, Math.toRadians(90)))
-                .lineTo(new Pose(0, 0, Math.toRadians(180)))
-                .lineTo(new Pose(0, 0, Math.toRadians(270)))
-                .lineTo(new Pose(0, 0, Math.toRadians(360)));
-
-        Trajectory line = new Trajectory()
+        Trajectory backAndForth = new Trajectory()
                 .lineTo(new Pose(40, 0, 0))
+                .action(() -> sleep(500))
+                .lineTo(new Pose(40, 0, Math.toRadians(180)))
+                .lineTo(new Pose(0, 0, Math.toRadians(180)))
+                .action(() -> sleep(500))
                 .lineTo(new Pose(0, 0, 0));
-
         while(opModeIsActive()) {
-            Actuation.drive(0, ActuationConstants.Autonomous.turnSpeed, 0);
-//            circle.run();
-//            line.run();
+            backAndForth.run();
         }
     }
 }

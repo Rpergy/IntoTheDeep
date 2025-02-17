@@ -7,12 +7,12 @@ import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
 public class ActuationConstants {
     @Config
     public static class Autonomous {
-        public static double moveSpeed = 0.65;
-        public static double turnSpeed = 0.9;
+        public static double moveSpeed = 0.7;
+        public static double turnSpeed = 0.8;
         public static double followDistance = 10;
         //omkar is mucho gay
         public static double minTurnSpeed = 0.04;
-        public static double turnAccelMult = 5.75163 * Math.pow(0.341159, turnSpeed);
+        public static double turnAccelMult = 2.3;
         public static double moveAccelMult = 0.7;
         public static double strafeAccelMult = 0.7;
     }
