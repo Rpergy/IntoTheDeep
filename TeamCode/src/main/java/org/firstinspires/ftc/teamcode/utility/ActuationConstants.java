@@ -12,7 +12,7 @@ public class ActuationConstants {
         public static double followDistance = 10;
         //omkar is mucho gay
         public static double minTurnSpeed = 0.04;
-        public static double turnAccelMult = 18.58*Math.pow(0.128, turnSpeed);
+        public static double turnAccelMult = 5.75163 * Math.pow(0.341159, turnSpeed);
         public static double moveAccelMult = 0.7;
         public static double strafeAccelMult = 0.7;
     }
@@ -27,9 +27,17 @@ public class ActuationConstants {
     @Config
     public static class Mechanical {
         public static int slidesInit = 0;
+        public static int slidesDeposit = 0;
+
         public static int tiltInit = 0;
+        public static int tiltIntake = 0;
+        public static int tiltDeposit = 0;
+        public static int tiltHang = 0;
 
         public static double flipInit = 0.0;
+        public static double flipIntake = 0.0;
+        public static double flipDeposit = 0.0;
+
         public static double openClaw = 0.0;
         public static double closedClaw = 0.0;
     }

@@ -19,6 +19,12 @@ public class Actuation {
     private static boolean fieldCentricToggle = false;
     private static boolean slowModeToggle = false;
 
+    private static boolean clawOpen = false;
+    private static boolean clawToggle = false;
+
+    private static boolean intake = true;
+    private static boolean intakeToggle = false;
+
     public static DcMotor frontLeft, frontRight, backLeft, backRight;
 
     public static DcMotor extend, tilt;
@@ -62,17 +68,26 @@ public class Actuation {
 
         if (map.dcMotor.contains("armTilt")) {
             tilt = map.dcMotor.get("armTilt");
+            tilt.setPower(1.0);
+            tilt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            tilt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            tilt.setTargetPosition(ActuationConstants.Mechanical.tiltInit);
         }
 
         if (map.dcMotor.contains("extend")) {
             extend = map.dcMotor.get("extend");
+            extend.setPower(1.0);
+            extend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            extend.setTargetPosition(ActuationConstants.Mechanical.slidesInit);
         }
 
         if (map.servo.contains("flip")) {
             flip = map.servo.get("flip");
+            flip.setPosition(ActuationConstants.Mechanical.flipInit);
         }
         if (map.servo.contains("claw")) {
             claw = map.servo.get("claw");
+            claw.setPosition(ActuationConstants.Mechanical.closedClaw);
         }
 
         dashboard = FtcDashboard.getInstance();
@@ -112,7 +127,50 @@ public class Actuation {
 
     // EXTEND
     public static void setExtension(int pos) {
+        extend.setTargetPosition(pos);
+    }
 
+    // TILT
+    public static void setTilt(int pos) {
+        tilt.setTargetPosition(pos);
+    }
+
+    // CLAW
+    public static void setClaw(double pos) {
+        claw.setPosition(pos);
+    }
+
+    public static void setFlip(double pos) {
+        flip.setPosition(pos);
+    }
+
+    public static void toggleClaw(boolean input) {
+        if (input && clawToggle) {
+            clawOpen = !clawOpen;
+
+            if (clawOpen)
+                setClaw(ActuationConstants.Mechanical.openClaw);
+            else
+                setClaw(ActuationConstants.Mechanical.closedClaw);
+        }
+
+        clawToggle = input;
+    }
+
+    public static void toggleIntake(boolean input) {
+        if (input && intakeToggle) {
+            intake = !intake;
+
+            if (intake) {
+                setTilt(ActuationConstants.Mechanical.tiltIntake);
+                setFlip(ActuationConstants.Mechanical.flipIntake);
+            }
+            else {
+                setTilt(ActuationConstants.Mechanical.tiltDeposit);
+                setFlip(ActuationConstants.Mechanical.flipDeposit);
+            }
+        }
+        intakeToggle = input;
     }
 
     // Toggles between p1 and p2 dropoff/pickup for autonomous
