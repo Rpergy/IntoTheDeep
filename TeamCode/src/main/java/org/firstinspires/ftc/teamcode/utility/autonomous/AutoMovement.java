@@ -110,23 +110,17 @@ public class AutoMovement {
 
         double turnPower = deltaTheta/Math.PI;
 
-        double m1 = (Math.tanh(deltaY * ActuationConstants.Autonomous.moveAccelMult) * Math.sin(robotPose.heading)) * movementSpeed;
-        double m2 = (Math.tanh(deltaX * ActuationConstants.Autonomous.moveAccelMult) * Math.cos(robotPose.heading)) * movementSpeed;
+        double m1 = Math.tanh(deltaY * Math.sin(robotPose.heading)) * ActuationConstants.Autonomous.moveAccelMult;
+        double m2 = Math.tanh(deltaX * Math.cos(robotPose.heading)) * ActuationConstants.Autonomous.moveAccelMult;
 
-        double s1 = (-Math.tanh(deltaY * ActuationConstants.Autonomous.moveAccelMult) * Math.cos(robotPose.heading)) * movementSpeed;
-        double s2 = (Math.tanh(deltaX * ActuationConstants.Autonomous.moveAccelMult) * Math.sin(robotPose.heading)) * movementSpeed;
+        double s1 = -Math.tanh(deltaY * Math.cos(robotPose.heading)) * ActuationConstants.Autonomous.moveAccelMult;
+        double s2 = Math.tanh(deltaX * Math.sin(robotPose.heading)) * ActuationConstants.Autonomous.moveAccelMult;
 
-        double movePower = (m1 * Math.abs(m1) + m2 * Math.abs(m2));
-        double strafePower =  (s1 * Math.abs(s1) + s2 * Math.abs(s2));
+        double movePower = (m1 * Math.abs(m1) + m2 * Math.abs(m2)) * movementSpeed;
+        double strafePower =  (s1 * Math.abs(s1) + s2 * Math.abs(s2)) * movementSpeed;
 
         if (turnPower >= 0) turnPower = turnSpeed * Math.pow(turnPower, (1.0/ActuationConstants.Autonomous.turnAccelMult));
         else turnPower = turnSpeed * -Math.pow(-turnPower, (1.0/ActuationConstants.Autonomous.turnAccelMult));
-
-//        if(turnPower > 0) turnPower = Math.pow(turnPower, 1.0/ActuationConstants.Autonomous.turnAccelMult) * turnSpeed;
-//        else turnPower = -Math.pow(-turnPower, 1.0/ActuationConstants.Autonomous.turnAccelMult) * turnSpeed;
-
-//        if(movePower > 0) movePower = Math.max(movePower, ActuationConstants.Autonomous.minMoveSpeed);
-//        else movePower = Math.min(movePower, -ActuationConstants.Autonomous.minMoveSpeed);
 
         double v1 = movePower - turnPower + strafePower;
         double v2 = movePower + turnPower - strafePower;

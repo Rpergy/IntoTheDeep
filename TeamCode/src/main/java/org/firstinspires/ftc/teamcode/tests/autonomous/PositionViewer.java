@@ -6,14 +6,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.utility.Actuation;
 import org.firstinspires.ftc.teamcode.utility.autonomous.AutoMovement;
-import org.firstinspires.ftc.teamcode.utility.autonomous.FieldConstants;
 import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
-
-import java.util.ArrayList;
 
 @TeleOp(name="Position Viewer", group = "tests")
 @Config
-public class PositionTest extends OpMode {
+public class PositionViewer extends OpMode {
     public static double x, y, heading;
 
     @Override

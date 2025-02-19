@@ -10,11 +10,9 @@ public class ActuationConstants {
         public static double moveSpeed = 0.7;
         public static double turnSpeed = 0.8;
         public static double followDistance = 10;
-        //omkar is mucho gay
-        public static double minTurnSpeed = 0.04;
+
         public static double turnAccelMult = 2.3;
-        public static double moveAccelMult = 0.7;
-        public static double strafeAccelMult = 0.7;
+        public static double moveAccelMult = 0.6;
     }
 
     @Config
