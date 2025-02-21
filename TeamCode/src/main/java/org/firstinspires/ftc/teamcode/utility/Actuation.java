@@ -3,14 +3,15 @@ package org.firstinspires.ftc.teamcode.utility;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.utility.autonomous.AutoMovement;
 import org.firstinspires.ftc.teamcode.utility.autonomous.FieldConstants;
-import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
 
 public class Actuation {
     public static boolean slowMode = false;
@@ -22,12 +23,16 @@ public class Actuation {
     private static boolean clawOpen = false;
     private static boolean clawToggle = false;
 
-    private static boolean intake = true;
-    private static boolean intakeToggle = false;
+    private static boolean basketToggle, chamberToggle = false;
+    private static int basketState, chamberState = 0;
+
+    private static boolean intakeState, intakeExtensionToggle = false;
+
+    private static boolean submersibleToggle, submersibleState = false;
 
     public static DcMotor frontLeft, frontRight, backLeft, backRight;
 
-    public static DcMotor extend, tilt;
+    public static DcMotorEx extend, tilt;
 
     public static ColorSensor color;
 
@@ -67,27 +72,33 @@ public class Actuation {
         }
 
         if (map.dcMotor.contains("armTilt")) {
-            tilt = map.dcMotor.get("armTilt");
+            tilt = (DcMotorEx)map.dcMotor.get("armTilt");
             tilt.setPower(1.0);
-            tilt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            tilt.setTargetPosition(ActuationConstants.Tilt.init);
             tilt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            tilt.setTargetPosition(ActuationConstants.Mechanical.tiltInit);
+            tilt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            tilt.setDirection(DcMotorSimple.Direction.REVERSE);
+
+            PIDFCoefficients newPIDF = new PIDFCoefficients(ActuationConstants.armPID.p, ActuationConstants.armPID.i, ActuationConstants.armPID.d, 0.0);
+            tilt.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPIDF);
         }
 
         if (map.dcMotor.contains("extend")) {
-            extend = map.dcMotor.get("extend");
+            extend = (DcMotorEx)map.dcMotor.get("extend");
             extend.setPower(1.0);
+            extend.setTargetPosition(ActuationConstants.Extend.init);
             extend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            extend.setTargetPosition(ActuationConstants.Mechanical.slidesInit);
+            extend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            extend.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
-        if (map.servo.contains("flip")) {
-            flip = map.servo.get("flip");
-            flip.setPosition(ActuationConstants.Mechanical.flipInit);
+        if (map.servo.contains("clawTilt")) {
+            flip = map.servo.get("clawTilt");
+            flip.setPosition(ActuationConstants.Claw.flipInit);
         }
         if (map.servo.contains("claw")) {
             claw = map.servo.get("claw");
-            claw.setPosition(ActuationConstants.Mechanical.closedClaw);
+            claw.setPosition(ActuationConstants.Claw.closed);
         }
 
         dashboard = FtcDashboard.getInstance();
@@ -145,32 +156,130 @@ public class Actuation {
     }
 
     public static void toggleClaw(boolean input) {
-        if (input && clawToggle) {
+        if (input && !clawToggle) {
             clawOpen = !clawOpen;
 
             if (clawOpen)
-                setClaw(ActuationConstants.Mechanical.openClaw);
+                setClaw(ActuationConstants.Claw.open);
             else
-                setClaw(ActuationConstants.Mechanical.closedClaw);
+                setClaw(ActuationConstants.Claw.closed);
         }
 
         clawToggle = input;
     }
 
-    public static void toggleIntake(boolean input) {
-        if (input && intakeToggle) {
-            intake = !intake;
+    public static void basketExtension(boolean input) {
+        if (input && !basketToggle) {
+            basketState += 1;
+            if (basketState == 3) basketState = 0;
 
-            if (intake) {
-                setTilt(ActuationConstants.Mechanical.tiltIntake);
-                setFlip(ActuationConstants.Mechanical.flipIntake);
+            if (basketState == 0) {
+                setExtension(ActuationConstants.Extend.init);
             }
-            else {
-                setTilt(ActuationConstants.Mechanical.tiltDeposit);
-                setFlip(ActuationConstants.Mechanical.flipDeposit);
+            else if (basketState == 1) {
+                setExtension(ActuationConstants.Extend.lowBasket);
+            }
+            else if (basketState == 2) {
+                setExtension(ActuationConstants.Extend.highBasket);
             }
         }
-        intakeToggle = input;
+        basketToggle = input;
+    }
+
+    public static void chamberExtension(boolean input) {
+        if (input && !chamberToggle) {
+            chamberState += 1;
+            if (chamberState == 3) chamberState = 0;
+
+            if (chamberState == 0) {
+                setExtension(ActuationConstants.Extend.init);
+            }
+            else if (chamberState == 1) {
+                setExtension(ActuationConstants.Extend.lowChamber);
+            }
+            else if (chamberState == 2) {
+                setExtension(ActuationConstants.Extend.highChamber);
+            }
+        }
+        chamberToggle = input;
+    }
+
+    public static void intakeExtension(boolean input) {
+        if (input && !intakeExtensionToggle) {
+            intakeState = !intakeState;
+
+            chamberState = 0;
+            basketState = 0;
+
+            if (intakeState) {
+                setExtension(ActuationConstants.Extend.intake);
+            }
+            else {
+                setExtension(ActuationConstants.Extend.init);
+            }
+        }
+        intakeExtensionToggle = input;
+    }
+
+    public static void retractExtension(boolean input) {
+        if (input) {
+            chamberState = 0;
+            basketState = 0;
+            setExtension(ActuationConstants.Extend.init);
+        }
+    }
+
+    public static void adjustExtension(double rate) {
+        setExtension(extend.getTargetPosition() + (int)rate);
+    }
+
+    public static void tiltObservation(boolean input) {
+        if (input) {
+            submersibleState = false;
+            setTilt(ActuationConstants.Tilt.intakeSpecimen);
+            setFlip(ActuationConstants.Claw.flipIntakeSpecimen);
+        }
+    }
+
+    public static void tiltBasketDeposit(boolean input) {
+        if (input) {
+            submersibleState = false;
+            setTilt(ActuationConstants.Tilt.basketDeposit);
+            setFlip(ActuationConstants.Claw.flipBasketDeposit);
+        }
+    }
+
+    public static void tiltChamberDeposit(boolean input) {
+        if (input) {
+            submersibleState = false;
+            setTilt(ActuationConstants.Tilt.chamberDeposit);
+            setFlip(ActuationConstants.Claw.flipChamberDeposit);
+        }
+    }
+
+    public static void tiltSubmersible(boolean input) {
+        if (input && !submersibleToggle) {
+            submersibleState = !submersibleState;
+
+            if (submersibleState) {
+                setTilt(ActuationConstants.Tilt.intakeSetup);
+                setFlip(ActuationConstants.Claw.flipIntake);
+            }
+            else {
+                setTilt(ActuationConstants.Tilt.intake);
+            }
+        }
+    }
+
+    public static void retractSubmersible(boolean input) {
+        if (input) {
+            submersibleState = false;
+            chamberState = 0;
+            basketState = 0;
+
+            setTilt(ActuationConstants.Tilt.intakeSetup);
+            setExtension(ActuationConstants.Extend.init);
+        }
     }
 
     // Toggles between p1 and p2 dropoff/pickup for autonomous

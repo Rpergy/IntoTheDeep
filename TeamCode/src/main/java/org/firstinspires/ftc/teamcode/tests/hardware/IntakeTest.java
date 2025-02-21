@@ -21,11 +21,11 @@ public class IntakeTest extends OpMode {
     public DcMotorEx armTilt, extend;
     public Servo claw, tilt;
     public static double clawPos = 0.0;
-    public static double clawTiltPos = 0.0;
-    public static int tiltPos = 0;
+    public static double clawTiltPos = 0.7;
+    public static int tiltPos = 100;
     public static int extendPos = 0;
 
-    public static double p = 6.0;
+    public static double p = 5.8;
     public static double i = 1.0;
     public static double d = 0.75;
     public static double f = 0.0;
@@ -39,7 +39,7 @@ public class IntakeTest extends OpMode {
         armTilt = (DcMotorEx)hardwareMap.dcMotor.get("armTilt");
         extend = (DcMotorEx)hardwareMap.dcMotor.get("extend");
 
-        armTilt.setPower(0.6);
+        armTilt.setPower(1.0);
         armTilt.setTargetPosition(tiltPos);
         armTilt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armTilt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

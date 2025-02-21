@@ -23,21 +23,43 @@ public class ActuationConstants {
     }
 
     @Config
-    public static class Mechanical {
-        public static int slidesInit = 0;
-        public static int slidesDeposit = 0;
+    public static class armPID {
+        public static double p = 5.8;
+        public static double i = 1.0;
+        public static double d = 0.75;
+    }
 
-        public static int tiltInit = 0;
-        public static int tiltIntake = 0;
-        public static int tiltDeposit = 0;
-        public static int tiltHang = 0;
+    @Config
+    public static class Extend {
+        public static int init = 100;
+        public static int lowBasket = 2000;
+        public static int highBasket = 3800;
+        public static int lowChamber = 0;
+        public static int highChamber = 1800;
+        public static int intake = 3000;
+    }
 
-        public static double flipInit = 0.0;
-        public static double flipIntake = 0.0;
-        public static double flipDeposit = 0.0;
+    @Config
+    public static class Tilt {
+        public static int init = 500;
+        public static int intakeSetup = 2000;
+        public static int intake = 2500;
+        public static int intakeSpecimen = 1700;
+        public static int basketDeposit = 800;
+        public static int chamberDeposit = 1100;
+        public static int hang = 200;
+    }
 
-        public static double openClaw = 0.0;
-        public static double closedClaw = 0.0;
+    @Config
+    public static class Claw {
+        public static double flipInit = 0.5;
+        public static double flipIntake = 0.7;
+        public static double flipIntakeSpecimen = 0.55;
+        public static double flipBasketDeposit = 0.5;
+        public static double flipChamberDeposit = 0.8;
+
+        public static double open = 0.15;
+        public static double closed = 0.0;
     }
 
     @Config
