@@ -27,6 +27,11 @@ public class RobotTeleOp extends OpMode {
         Actuation.adjustExtension(10 * gamepad2.left_trigger);
         Actuation.adjustExtension(-10 * gamepad2.right_trigger);
 
+        if (gamepad2.left_bumper)
+            Actuation.adjustTilt(10);
+        if (gamepad2.right_bumper)
+            Actuation.adjustTilt(-10);
+
         Actuation.tiltObservation(gamepad1.square);
         Actuation.tiltBasketDeposit(gamepad1.triangle);
         Actuation.tiltChamberDeposit(gamepad1.dpad_right);

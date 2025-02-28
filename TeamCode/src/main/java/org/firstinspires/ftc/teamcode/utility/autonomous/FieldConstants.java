@@ -38,7 +38,7 @@ public class FieldConstants {
         public static Pose rightStart = new Pose(12,-62, Math.toRadians(90));
 
         public static Pose leftShort = new Pose(-6,-35, Math.toRadians(90));
-        public static Pose leftLong = new Pose(-27,-10,0);
+        public static Pose leftLong = new Pose(-25,-10,0);
         public static Pose rightShort = new Pose(6,-35, Math.toRadians(90));
         public static Pose rightLong = new Pose(25,-12,Math.toRadians(180));
 

@@ -20,41 +20,40 @@ public class LeftRed extends LinearOpMode {
         int angle = 0;
 
         Trajectory depositPreload = new Trajectory()
+                .action(() -> Actuation.setExtension(ActuationConstants.Extend.init))
+                .action(() -> Actuation.setClaw(ActuationConstants.Claw.closed))
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.basketDeposit))
                 .lineTo(FieldConstants.Red.baskets)
                 .action(() -> Actuation.setExtension(ActuationConstants.Extend.highBasket))
-                .action(() -> sleep(2500))
-                .lineTo(FieldConstants.Red.baskets.augment(new Pose(-2.5, -2.5, 0)))
-                .action(() -> sleep(500))
+                .action(() -> sleep(1750))
+                .lineTo(FieldConstants.Red.baskets.augment(new Pose(-2, -2, 0)))
+                .action(() -> sleep(150))
                 .action(() -> Actuation.setClaw(ActuationConstants.Claw.open))
-                .action(() -> Actuation.setExtension(ActuationConstants.Extend.init))
-                .lineTo(FieldConstants.Red.baskets.augment(new Pose(2, 2, 0)));
+                .action(() -> sleep(100))
+                .lineTo(FieldConstants.Red.baskets.augment(new Pose(2, 2, 0)))
+                .action(() -> Actuation.setExtension(ActuationConstants.Extend.init));
 
         Trajectory cycleTransition = new Trajectory()
                 .lineTo(FieldConstants.Red.neutralSamples.augment(new Pose(0, 0, Math.toRadians(angle))))
-                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup));
-
-        Trajectory cycleSample = new Trajectory()
-                .action(() -> sleep(1500))
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intake))
-                .action(() -> sleep(500))
-                .action(() -> Actuation.setClaw(ActuationConstants.Claw.closed))
-                .action(() -> Actuation.setExtension(ActuationConstants.Extend.init))
-                .action(() -> sleep(1500))
-                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.basketDeposit))
-                .action(() -> sleep(200));
+                .action(() -> Actuation.setFlip(ActuationConstants.Claw.flipIntake));
 
         Trajectory park = new Trajectory()
-                .lineTo(new Pose(-40, -12, 0), 0.7, 0.7)
+                .lineTo(new Pose(-36, -11, 0))
                 .action(() -> Actuation.setTilt(0))
                 .lineTo(FieldConstants.Red.leftLong)
                 .action(() -> sleep(1000));
 
         waitForStart();
         depositPreload.run();
-//
-//        cycleTransition.run();
-//        Actuation.setExtension(1000);
+
+        cycleTransition.run();
+        Actuation.setExtension(1200);
+        sleep(1500);
+        Actuation.setClaw(ActuationConstants.Claw.closed);
+        Actuation.setExtension(ActuationConstants.Extend.init);
+        sleep(1500);
+        depositPreload.run();
 //        cycleSample.run();
 //        depositPreload.run();
 //        angle = 30;

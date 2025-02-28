@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.utility;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -264,6 +265,7 @@ public class Actuation {
             if (submersibleState) {
                 setTilt(ActuationConstants.Tilt.intakeSetup);
                 setFlip(ActuationConstants.Claw.flipIntake);
+                setExtension(200);
             }
             else {
                 setTilt(ActuationConstants.Tilt.intake);
@@ -282,6 +284,10 @@ public class Actuation {
         }
     }
 
+    public static void adjustTilt(double rate) {
+        setTilt(tilt.getTargetPosition() + (int)rate);
+    }
+
     // Toggles between p1 and p2 dropoff/pickup for autonomous
     public static void toggleBlueDeliver() {
         if (FieldConstants.Blue.deliverPoint.equals(FieldConstants.Blue.observation1)) {
@@ -293,6 +299,16 @@ public class Actuation {
             FieldConstants.Blue.pickupPoint = FieldConstants.Blue.observation2;
         }
     }
+
+    public static void waitForExtension() {
+        while (Math.abs(extend.getCurrentPosition() - extend.getTargetPosition()) > 20) {
+            TelemetryPacket packet = new TelemetryPacket();
+            packet.put("pos", extend.getCurrentPosition());
+            packet.put("target", extend.getTargetPosition());
+            dashboard.sendTelemetryPacket(packet);
+        };
+    }
+
     public static void toggleRedDeliver() {
         if (FieldConstants.Red.deliverPoint.equals(FieldConstants.Red.observation1)) {
             FieldConstants.Red.deliverPoint = FieldConstants.Red.observation2;
