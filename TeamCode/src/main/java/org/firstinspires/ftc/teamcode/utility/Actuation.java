@@ -26,6 +26,7 @@ public class Actuation {
 
     private static boolean basketToggle, chamberToggle = false;
     private static int basketState, chamberState = 0;
+    private static boolean wristToggle, wristUp = false;
 
     private static boolean intakeState, intakeExtensionToggle = false;
 
@@ -167,6 +168,20 @@ public class Actuation {
         }
 
         clawToggle = input;
+    }
+
+    public static void toggleWrist(boolean input) {
+        if (input && !wristToggle) {
+            wristUp = !wristUp;
+
+            if (!wristUp) {
+                setFlip(ActuationConstants.Claw.flipBasketDeposit);
+            }
+            else {
+                setFlip(0.5);
+            }
+        }
+        wristToggle = input;
     }
 
     public static void basketExtension(boolean input) {

@@ -39,6 +39,7 @@ public class RobotTeleOp extends OpMode {
         Actuation.retractSubmersible(gamepad1.circle);
 
         Actuation.toggleClaw(gamepad1.right_bumper);
+        Actuation.toggleWrist(gamepad1.left_bumper);
 
         AutoMovement.updatePosition();
         AutoMovement.displayPosition();
