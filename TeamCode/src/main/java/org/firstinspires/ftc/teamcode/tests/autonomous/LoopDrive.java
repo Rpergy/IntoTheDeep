@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.tests.autonomous;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.utility.Actuation;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.utility.autonomous.Trajectory;
 import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
 
 @Autonomous(name="loop drive", group = "tests")
+@Disabled
 public class LoopDrive extends LinearOpMode {
     @Override
     public void runOpMode() {

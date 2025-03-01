@@ -12,7 +12,7 @@ public class ActuationConstants {
         public static double followDistance = 10;
 
         public static double turnAccelMult = 2.3;
-        public static double moveAccelMult = 0.6;
+        public static double moveAccelMult = 0.66;
     }
 
     @Config
@@ -31,7 +31,7 @@ public class ActuationConstants {
 
     @Config
     public static class Extend {
-        public static int init = 100;
+        public static int init = 300;
         public static int lowBasket = 2000;
         public static int highBasket = 3500;
         public static int lowChamber = 0;
@@ -41,21 +41,21 @@ public class ActuationConstants {
 
     @Config
     public static class Tilt {
-        public static int init = 1700;
+        public static int init = 1000;
         public static int intakeSetup = 2000;
         public static int intake = 2450;
         public static int intakeSpecimen = 1700;
-        public static int basketDeposit = 800;
+        public static int basketDeposit = 600;
         public static int chamberDeposit = 1100;
         public static int hang = 200;
     }
 
     @Config
     public static class Claw {
-        public static double flipInit = 0.8;
+        public static double flipInit = 0.2;
         public static double flipIntake = 0.0;
         public static double flipIntakeSpecimen = 0.35;
-        public static double flipBasketDeposit = 0.5;
+        public static double flipBasketDeposit = 0.85;
         public static double flipChamberDeposit = 0.3;
 
         public static double open = 0.15;

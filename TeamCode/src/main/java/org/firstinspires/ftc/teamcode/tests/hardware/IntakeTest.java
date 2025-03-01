@@ -81,8 +81,8 @@ public class IntakeTest extends OpMode {
 
         TelemetryPacket packet = new TelemetryPacket();
         packet.put("extend pos", extend.getCurrentPosition());
-        packet.put("position", armTilt.getCurrentPosition());
-        packet.put("target", armTilt.getTargetPosition());
+        packet.put("tilt pos", armTilt.getCurrentPosition());
+        packet.put("tilt target", armTilt.getTargetPosition());
         packet.put("P", current.p);
         packet.put("I", current.i);
         packet.put("D", current.d);

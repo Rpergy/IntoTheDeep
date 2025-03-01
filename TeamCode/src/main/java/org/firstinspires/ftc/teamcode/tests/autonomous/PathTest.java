@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
 import java.util.ArrayList;
 
 @Autonomous(name="path test", group="tests")
+@Disabled
 public class PathTest extends LinearOpMode {
     @Override
     public void runOpMode() {

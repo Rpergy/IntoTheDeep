@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 @Config
 @TeleOp(name="Perpendicular Tuner", group="tuning")
+@Disabled
 public class PerpendicularTuner extends OpMode {
     public static double measuredDist = 0.0;
 

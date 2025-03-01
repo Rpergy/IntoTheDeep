@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 @Config
 @TeleOp(name="Center Tuner", group="tuning")
+@Disabled
 public class CenterTuner extends OpMode {
     public static double measuredDist = 0.0;
     @Override

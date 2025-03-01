@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.utility.tuning;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.utility.autonomous.AutoMovement;
 
 @Config
 @TeleOp(name="Lateral Tuner", group="tuning")
+@Disabled
 public class LateralTuner extends OpMode {
     public static double measuredAngle = 180;
 

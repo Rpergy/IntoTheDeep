@@ -17,58 +17,68 @@ public class LeftRed extends LinearOpMode {
         Actuation.setup(hardwareMap, telemetry);
         AutoMovement.setStartPos(FieldConstants.Red.leftStart);
 
-        int angle = 0;
-
-        Trajectory depositPreload = new Trajectory()
-                .action(() -> Actuation.setExtension(ActuationConstants.Extend.init))
-                .action(() -> Actuation.setClaw(ActuationConstants.Claw.closed))
+        Trajectory deposit = new Trajectory()
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.basketDeposit))
                 .lineTo(FieldConstants.Red.baskets)
+                .action(() -> Actuation.setFlip(ActuationConstants.Claw.flipBasketDeposit))
                 .action(() -> Actuation.setExtension(ActuationConstants.Extend.highBasket))
-                .action(() -> sleep(1750))
-                .lineTo(FieldConstants.Red.baskets.augment(new Pose(-2, -2, 0)))
-                .action(() -> sleep(150))
+                .action(() -> sleep(2000))
+                .action(() -> Actuation.setFlip(0.5))
                 .action(() -> Actuation.setClaw(ActuationConstants.Claw.open))
-                .action(() -> sleep(100))
-                .lineTo(FieldConstants.Red.baskets.augment(new Pose(2, 2, 0)))
-                .action(() -> Actuation.setExtension(ActuationConstants.Extend.init));
+                .action(() -> sleep(500))
+                .action(() -> Actuation.setFlip(ActuationConstants.Claw.flipBasketDeposit))
+                .action(() -> Actuation.setExtension(ActuationConstants.Extend.init))
+                .action(() -> sleep(2000));
 
-        Trajectory cycleTransition = new Trajectory()
-                .lineTo(FieldConstants.Red.neutralSamples.augment(new Pose(0, 0, Math.toRadians(angle))))
+        Trajectory firstCycle = new Trajectory()
+                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
+                .action(() -> Actuation.setFlip(ActuationConstants.Claw.flipIntake))
+                .lineTo(FieldConstants.Red.neutralSamples)
+                .action(() -> Actuation.setExtension(1350))
+                .action(() -> sleep(1000))
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intake))
-                .action(() -> Actuation.setFlip(ActuationConstants.Claw.flipIntake));
-
-        Trajectory park = new Trajectory()
-                .lineTo(new Pose(-36, -11, 0))
-                .action(() -> Actuation.setTilt(0))
-                .lineTo(FieldConstants.Red.leftLong)
+                .action(() -> sleep(500))
+                .action(() -> Actuation.setClaw(ActuationConstants.Claw.closed))
+                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
+                .action(() -> sleep(800))
+                .action(() -> Actuation.setExtension(ActuationConstants.Extend.init))
                 .action(() -> sleep(1000));
 
+        Trajectory secondCycle = new Trajectory()
+                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
+                .action(() -> Actuation.setFlip(ActuationConstants.Claw.flipIntake))
+                .lineTo(FieldConstants.Red.neutralSamples.augment(new Pose(-9.5, 0, 0)))
+                .action(() -> Actuation.setExtension(1350))
+                .action(() -> sleep(1000))
+                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intake))
+                .action(() -> sleep(500))
+                .action(() -> Actuation.setClaw(ActuationConstants.Claw.closed))
+                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
+                .action(() -> sleep(800))
+                .action(() -> Actuation.setExtension(ActuationConstants.Extend.init))
+                .action(() -> sleep(1000));
+
+        Trajectory thirdCycle = new Trajectory()
+                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
+                .action(() -> Actuation.setFlip(ActuationConstants.Claw.flipIntake))
+                .lineTo(FieldConstants.Red.neutralSamples.augment(new Pose(-9.5, 1, Math.toRadians(40))))
+                .action(() -> Actuation.setExtension(1350))
+                .action(() -> sleep(1000));
+//                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intake))
+//                .action(() -> sleep(500))
+//                .action(() -> Actuation.setClaw(ActuationConstants.Claw.closed))
+//                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
+//                .action(() -> sleep(800))
+//                .action(() -> Actuation.setExtension(ActuationConstants.Extend.init))
+//                .action(() -> sleep(1000));
+
+        Actuation.setTilt(ActuationConstants.Tilt.init);
         waitForStart();
-        depositPreload.run();
-
-        cycleTransition.run();
-        Actuation.setExtension(1200);
-        sleep(1500);
-        Actuation.setClaw(ActuationConstants.Claw.closed);
-        Actuation.setExtension(ActuationConstants.Extend.init);
-        sleep(1500);
-        depositPreload.run();
-//        cycleSample.run();
-//        depositPreload.run();
-//        angle = 30;
-//
-//        cycleTransition.run();
-//        Actuation.setExtension(1250);
-//        cycleSample.run();
-//        depositPreload.run();
-//        angle = 50;
-//
-//        cycleTransition.run();
-//        Actuation.setExtension(1500);
-//        cycleSample.run();
-//        depositPreload.run();
-
-        park.run();
+        deposit.run();
+        firstCycle.run();
+        deposit.run();
+        secondCycle.run();
+        deposit.run();
+        thirdCycle.run();
     }
 }
