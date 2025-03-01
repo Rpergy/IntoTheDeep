@@ -42,8 +42,8 @@ public class ActuationConstants {
     @Config
     public static class Tilt {
         public static int init = 1000;
-        public static int intakeSetup = 2000;
-        public static int intake = 2450;
+        public static int intakeSetup = 1700;
+        public static int intake = 2000;
         public static int intakeSpecimen = 1700;
         public static int basketDeposit = 600;
         public static int chamberDeposit = 1100;
@@ -52,14 +52,8 @@ public class ActuationConstants {
 
     @Config
     public static class Claw {
-        public static double flipInit = 0.2;
-        public static double flipIntake = 0.0;
-        public static double flipIntakeSpecimen = 0.35;
-        public static double flipBasketDeposit = 0.85;
-        public static double flipChamberDeposit = 0.3;
-
-        public static double open = 0.15;
-        public static double closed = 0.0;
+        public static double open = 1.0;
+        public static double closed = 0.65;
     }
 
     @Config

@@ -20,19 +20,15 @@ public class LeftRed extends LinearOpMode {
         Trajectory deposit = new Trajectory()
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.basketDeposit))
                 .lineTo(FieldConstants.Red.baskets)
-                .action(() -> Actuation.setFlip(ActuationConstants.Claw.flipBasketDeposit))
                 .action(() -> Actuation.setExtension(ActuationConstants.Extend.highBasket))
                 .action(() -> sleep(2000))
-                .action(() -> Actuation.setFlip(0.5))
                 .action(() -> Actuation.setClaw(ActuationConstants.Claw.open))
                 .action(() -> sleep(500))
-                .action(() -> Actuation.setFlip(ActuationConstants.Claw.flipBasketDeposit))
                 .action(() -> Actuation.setExtension(ActuationConstants.Extend.init))
                 .action(() -> sleep(2000));
 
         Trajectory firstCycle = new Trajectory()
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
-                .action(() -> Actuation.setFlip(ActuationConstants.Claw.flipIntake))
                 .lineTo(FieldConstants.Red.neutralSamples)
                 .action(() -> Actuation.setExtension(1350))
                 .action(() -> sleep(1000))
@@ -46,7 +42,6 @@ public class LeftRed extends LinearOpMode {
 
         Trajectory secondCycle = new Trajectory()
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
-                .action(() -> Actuation.setFlip(ActuationConstants.Claw.flipIntake))
                 .lineTo(FieldConstants.Red.neutralSamples.augment(new Pose(-9.5, 0, 0)))
                 .action(() -> Actuation.setExtension(1350))
                 .action(() -> sleep(1000))
@@ -60,7 +55,6 @@ public class LeftRed extends LinearOpMode {
 
         Trajectory thirdCycle = new Trajectory()
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
-                .action(() -> Actuation.setFlip(ActuationConstants.Claw.flipIntake))
                 .lineTo(FieldConstants.Red.neutralSamples.augment(new Pose(-9.5, 1, Math.toRadians(40))))
                 .action(() -> Actuation.setExtension(1350))
                 .action(() -> sleep(1000));

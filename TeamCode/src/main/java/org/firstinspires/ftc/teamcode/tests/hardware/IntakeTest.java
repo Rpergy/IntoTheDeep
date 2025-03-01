@@ -8,27 +8,19 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.teamcode.utility.Actuation;
-import org.firstinspires.ftc.teamcode.utility.ActuationConstants;
 
 @TeleOp(group="tests", name="Intake Test")
 @Config
 public class IntakeTest extends OpMode {
     public DcMotorEx armTilt, extend;
-    public Servo claw, tilt;
-    public static double clawPos = 0.0;
-    public static double clawTiltPos = 0.7;
     public static int tiltPos = 100;
     public static int extendPos = 0;
 
-    public static double p = 5.8;
-    public static double i = 1.0;
-    public static double d = 0.75;
-    public static double f = 0.0;
+    public static double P = 5.8;
+    public static double I = 1.0;
+    public static double D = 0.75;
+    public static double F = 0.0;
 
     PIDFCoefficients original;
 
@@ -40,24 +32,21 @@ public class IntakeTest extends OpMode {
         extend = (DcMotorEx)hardwareMap.dcMotor.get("extend");
 
         armTilt.setPower(1.0);
-        armTilt.setTargetPosition(tiltPos);
+        armTilt.setTargetPosition(500);
         armTilt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armTilt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armTilt.setDirection(DcMotorSimple.Direction.REVERSE);
 
         extend.setPower(1.0);
-        extend.setTargetPosition(extendPos);
+        extend.setTargetPosition(300);
         extend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         extend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extend.setDirection(DcMotorSimple.Direction.REVERSE);
 
         original = armTilt.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
-        PIDFCoefficients newPIDF = new PIDFCoefficients(p, i, d, f);
+        PIDFCoefficients newPIDF = new PIDFCoefficients(P, I, D, F);
 
         armTilt.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPIDF);
-
-        claw = hardwareMap.servo.get("claw");
-        tilt = hardwareMap.servo.get("clawTilt");
 
         dashboard = FtcDashboard.getInstance();
 
@@ -69,12 +58,9 @@ public class IntakeTest extends OpMode {
         extend.setTargetPosition(extendPos);
         armTilt.setTargetPosition(tiltPos);
 
-        claw.setPosition(clawPos);
-        tilt.setPosition(clawTiltPos);
-
         PIDFCoefficients current = armTilt.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        PIDFCoefficients newPIDF = new PIDFCoefficients(p, i, d, f);
+        PIDFCoefficients newPIDF = new PIDFCoefficients(P, I, D, F);
 
         if (!current.equals(newPIDF))
             armTilt.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPIDF);

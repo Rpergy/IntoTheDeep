@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.utility;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -36,9 +37,8 @@ public class Actuation {
 
     public static DcMotorEx extend, tilt;
 
-    public static ColorSensor color;
-
-    public static Servo flip, claw;
+    public static Servo claw;
+    public static CRServo leftWrist, rightWrist;
 
 //    private static RevBlinkinLedDriver leds;
 
@@ -73,16 +73,18 @@ public class Actuation {
             backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
+
         if (map.dcMotor.contains("armTilt")) {
             tilt = (DcMotorEx)map.dcMotor.get("armTilt");
             tilt.setPower(1.0);
             tilt.setTargetPosition(ActuationConstants.Tilt.init);
             tilt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            tilt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             tilt.setDirection(DcMotorSimple.Direction.REVERSE);
 
             PIDFCoefficients newPIDF = new PIDFCoefficients(ActuationConstants.armPID.p, ActuationConstants.armPID.i, ActuationConstants.armPID.d, 0.0);
             tilt.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, newPIDF);
+
+            setTilt(ActuationConstants.Tilt.init);
         }
 
         if (map.dcMotor.contains("extend")) {
@@ -94,13 +96,17 @@ public class Actuation {
             extend.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
-        if (map.servo.contains("clawTilt")) {
-            flip = map.servo.get("clawTilt");
-            flip.setPosition(ActuationConstants.Claw.flipInit);
-        }
         if (map.servo.contains("claw")) {
             claw = map.servo.get("claw");
             claw.setPosition(ActuationConstants.Claw.closed);
+        }
+
+        if (map.crservo.contains("leftWrist")) {
+            leftWrist = map.crservo.get("leftWrist");
+        }
+
+        if (map.crservo.contains("rightWrist")) {
+            rightWrist = map.crservo.get("rightWrist");
         }
 
         dashboard = FtcDashboard.getInstance();
@@ -153,8 +159,9 @@ public class Actuation {
         claw.setPosition(pos);
     }
 
-    public static void setFlip(double pos) {
-        flip.setPosition(pos);
+    public static void powerWrist(double offset, double rotate) {
+        leftWrist.setPower(offset + rotate);
+        rightWrist.setPower(rotate - offset);
     }
 
     public static void toggleClaw(boolean input) {
@@ -170,22 +177,9 @@ public class Actuation {
         clawToggle = input;
     }
 
-    public static void toggleWrist(boolean input) {
-        if (input && !wristToggle) {
-            wristUp = !wristUp;
-
-            if (!wristUp) {
-                setFlip(ActuationConstants.Claw.flipBasketDeposit);
-            }
-            else {
-                setFlip(0.5);
-            }
-        }
-        wristToggle = input;
-    }
-
     public static void basketExtension(boolean input) {
         if (input && !basketToggle) {
+            chamberState = 0;
             basketState += 1;
             if (basketState == 3) basketState = 0;
 
@@ -204,6 +198,7 @@ public class Actuation {
 
     public static void chamberExtension(boolean input) {
         if (input && !chamberToggle) {
+            basketState = 0;
             chamberState += 1;
             if (chamberState == 3) chamberState = 0;
 
@@ -245,15 +240,10 @@ public class Actuation {
         }
     }
 
-    public static void adjustExtension(double rate) {
-        setExtension(extend.getTargetPosition() + (int)rate);
-    }
-
     public static void tiltObservation(boolean input) {
         if (input) {
             submersibleState = false;
             setTilt(ActuationConstants.Tilt.intakeSpecimen);
-            setFlip(ActuationConstants.Claw.flipIntakeSpecimen);
         }
     }
 
@@ -261,7 +251,6 @@ public class Actuation {
         if (input) {
             submersibleState = false;
             setTilt(ActuationConstants.Tilt.basketDeposit);
-            setFlip(ActuationConstants.Claw.flipBasketDeposit);
         }
     }
 
@@ -269,7 +258,6 @@ public class Actuation {
         if (input) {
             submersibleState = false;
             setTilt(ActuationConstants.Tilt.chamberDeposit);
-            setFlip(ActuationConstants.Claw.flipChamberDeposit);
         }
     }
 
@@ -279,8 +267,6 @@ public class Actuation {
 
             if (submersibleState) {
                 setTilt(ActuationConstants.Tilt.intakeSetup);
-                setFlip(ActuationConstants.Claw.flipIntake);
-                setExtension(200);
             }
             else {
                 setTilt(ActuationConstants.Tilt.intake);
@@ -288,15 +274,8 @@ public class Actuation {
         }
     }
 
-    public static void retractSubmersible(boolean input) {
-        if (input) {
-            submersibleState = false;
-            chamberState = 0;
-            basketState = 0;
-
-            setTilt(ActuationConstants.Tilt.intakeSetup);
-            setExtension(ActuationConstants.Extend.init);
-        }
+    public static void adjustExtension(double rate) {
+        setExtension(extend.getTargetPosition() + (int)rate);
     }
 
     public static void adjustTilt(double rate) {
