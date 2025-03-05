@@ -17,20 +17,34 @@ public class LeftRed extends LinearOpMode {
         Actuation.setup(hardwareMap, telemetry);
         AutoMovement.setStartPos(FieldConstants.Red.leftStart);
 
+        Actuation.setExtension(ActuationConstants.Extend.init);
+        Actuation.setClaw(ActuationConstants.Claw.closed);
+        Actuation.powerWrist(1.0, 0.0);
+        sleep(10);
+        Actuation.powerWrist(0.0, 0.0);
+
         Trajectory deposit = new Trajectory()
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.basketDeposit))
                 .lineTo(FieldConstants.Red.baskets)
+                .action(() -> Actuation.powerWrist(0.5, 0))
+                .action(() -> sleep(300))
+                .action(() -> Actuation.powerWrist(0.0, 0.0))
+                .action(() -> sleep(100))
                 .action(() -> Actuation.setExtension(ActuationConstants.Extend.highBasket))
                 .action(() -> sleep(2000))
                 .action(() -> Actuation.setClaw(ActuationConstants.Claw.open))
                 .action(() -> sleep(500))
                 .action(() -> Actuation.setExtension(ActuationConstants.Extend.init))
-                .action(() -> sleep(2000));
+                .action(() -> sleep(1800))
+                .action(() -> Actuation.powerWrist(-0.5, 0))
+                .action(() -> sleep(100))
+                .action(() -> Actuation.powerWrist(0.0, 0.0))
+                .action(() -> sleep(100));
 
         Trajectory firstCycle = new Trajectory()
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
                 .lineTo(FieldConstants.Red.neutralSamples)
-                .action(() -> Actuation.setExtension(1350))
+                .action(() -> Actuation.setExtension(1200))
                 .action(() -> sleep(1000))
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intake))
                 .action(() -> sleep(500))
@@ -42,8 +56,8 @@ public class LeftRed extends LinearOpMode {
 
         Trajectory secondCycle = new Trajectory()
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
-                .lineTo(FieldConstants.Red.neutralSamples.augment(new Pose(-9.5, 0, 0)))
-                .action(() -> Actuation.setExtension(1350))
+                .lineTo(FieldConstants.Red.neutralSamples.augment(new Pose(-10.2, 0, 0)))
+                .action(() -> Actuation.setExtension(1250))
                 .action(() -> sleep(1000))
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intake))
                 .action(() -> sleep(500))
@@ -55,16 +69,16 @@ public class LeftRed extends LinearOpMode {
 
         Trajectory thirdCycle = new Trajectory()
                 .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
-                .lineTo(FieldConstants.Red.neutralSamples.augment(new Pose(-9.5, 1, Math.toRadians(40))))
-                .action(() -> Actuation.setExtension(1350))
+                .lineTo(FieldConstants.Red.neutralSamples.augment(new Pose(-9.5, 1, Math.toRadians(30))))
+                .action(() -> Actuation.setExtension(1400))
+                .action(() -> sleep(1000))
+                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intake))
+                .action(() -> sleep(500))
+                .action(() -> Actuation.setClaw(ActuationConstants.Claw.closed))
+                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
+                .action(() -> sleep(800))
+                .action(() -> Actuation.setExtension(ActuationConstants.Extend.init))
                 .action(() -> sleep(1000));
-//                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intake))
-//                .action(() -> sleep(500))
-//                .action(() -> Actuation.setClaw(ActuationConstants.Claw.closed))
-//                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSetup))
-//                .action(() -> sleep(800))
-//                .action(() -> Actuation.setExtension(ActuationConstants.Extend.init))
-//                .action(() -> sleep(1000));
 
         Actuation.setTilt(ActuationConstants.Tilt.init);
         waitForStart();
