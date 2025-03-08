@@ -281,40 +281,4 @@ public class Actuation {
     public static void adjustTilt(double rate) {
         setTilt(tilt.getTargetPosition() + (int)rate);
     }
-
-    // Toggles between p1 and p2 dropoff/pickup for autonomous
-    public static void toggleBlueDeliver() {
-        if (FieldConstants.Blue.deliverPoint.equals(FieldConstants.Blue.observation1)) {
-            FieldConstants.Blue.deliverPoint = FieldConstants.Blue.observation2;
-            FieldConstants.Blue.pickupPoint = FieldConstants.Blue.observation1;
-        }
-        else {
-            FieldConstants.Blue.deliverPoint = FieldConstants.Blue.observation1;
-            FieldConstants.Blue.pickupPoint = FieldConstants.Blue.observation2;
-        }
-    }
-
-    public static void waitForExtension() {
-        while (Math.abs(extend.getCurrentPosition() - extend.getTargetPosition()) > 20) {
-            TelemetryPacket packet = new TelemetryPacket();
-            packet.put("pos", extend.getCurrentPosition());
-            packet.put("target", extend.getTargetPosition());
-            dashboard.sendTelemetryPacket(packet);
-        };
-    }
-
-    public static void toggleRedDeliver() {
-        if (FieldConstants.Red.deliverPoint.equals(FieldConstants.Red.observation1)) {
-            FieldConstants.Red.deliverPoint = FieldConstants.Red.observation2;
-            FieldConstants.Red.pickupPoint = FieldConstants.Red.observation1;
-        }
-        else {
-            FieldConstants.Red.deliverPoint = FieldConstants.Red.observation1;
-            FieldConstants.Red.pickupPoint = FieldConstants.Red.observation2;
-        }
-    }
-
-//    public static void setLeds(RevBlinkinLedDriver.BlinkinPattern pattern) {
-//        leds.setPattern(pattern);
-//    }
 }

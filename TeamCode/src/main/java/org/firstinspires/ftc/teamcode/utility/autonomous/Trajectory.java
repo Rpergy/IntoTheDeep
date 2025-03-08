@@ -93,7 +93,7 @@ public class Trajectory {
         double dist = MathFunctions.distance(robotPose.toPoint(), targetPose.toPoint());
         double rotDist = robotPose.heading - targetPose.heading;
 
-        while(dist > 0.7 || Math.abs(MathFunctions.AngleWrap(rotDist)) > Math.toRadians(4)) {
+        while(dist > 1.0 || Math.abs(MathFunctions.AngleWrap(rotDist)) > Math.toRadians(4)) {
             AutoMovement.updatePosition();
 
             AutoMovement.displayPosition(); //omkarisgay and fat obese large

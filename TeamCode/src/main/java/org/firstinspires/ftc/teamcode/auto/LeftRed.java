@@ -10,12 +10,12 @@ import org.firstinspires.ftc.teamcode.utility.autonomous.FieldConstants;
 import org.firstinspires.ftc.teamcode.utility.autonomous.Trajectory;
 import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
 
-@Autonomous(name="Left Red", group="red")
+@Autonomous(name="Left")
 public class LeftRed extends LinearOpMode {
     @Override
     public void runOpMode() {
         Actuation.setup(hardwareMap, telemetry);
-        AutoMovement.setStartPos(FieldConstants.Red.leftStart);
+        AutoMovement.setStartPos(FieldConstants.Red.rightStart);
 
         Actuation.setExtension(ActuationConstants.Extend.init);
         Actuation.setClaw(ActuationConstants.Claw.closed);

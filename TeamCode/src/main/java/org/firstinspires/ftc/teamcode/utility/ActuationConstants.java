@@ -7,12 +7,12 @@ import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
 public class ActuationConstants {
     @Config
     public static class Autonomous {
-        public static double moveSpeed = 0.70;
+        public static double moveSpeed = 0.68;
         public static double turnSpeed = 0.8;
         public static double followDistance = 10;
 
         public static double turnAccelMult = 2.3;
-        public static double moveAccelMult = 0.68;
+        public static double moveAccelMult = 0.45;
     }
 
     @Config
@@ -43,9 +43,9 @@ public class ActuationConstants {
     public static class Tilt {
         public static int init = 1000;
         public static int intakeSetup = 1700;
-        public static int intake = 2600;
-        public static int intakeSpecimen = 1700;
-        public static int basketDeposit = 600;
+        public static int intake = 2300;
+        public static int intakeSpecimen = 1850;
+        public static int basketDeposit = 400;
         public static int chamberDeposit = 1100;
         public static int hang = 200;
     }

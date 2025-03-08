@@ -39,7 +39,7 @@ public class FieldConstants {
 
         public static Pose leftShort = new Pose(-6,-35, Math.toRadians(90));
         public static Pose leftLong = new Pose(-25,-10,0);
-        public static Pose rightShort = new Pose(6,-35, Math.toRadians(90));
+        public static Pose rightShort = new Pose(5,-42, Math.toRadians(90));
         public static Pose rightLong = new Pose(25,-12,Math.toRadians(180));
 
         public static Pose observation1 = new Pose(40,-60, Math.toRadians(-45));
@@ -49,6 +49,8 @@ public class FieldConstants {
         public static Pose baskets = new Pose(-53.3,-51.3, Math.toRadians(-135));
 
         public static Pose neutralSamples = new Pose(-49,-42,Math.toRadians(90));
-        public static Pose allianceSamples = new Pose(49,-42,Math.toRadians(90));
+        public static Pose allianceSamples = new Pose(28,-33,Math.toRadians(45));
+
+        public static Pose specimenPickup = new Pose(40, -53, Math.toRadians(-90));
     }
 }

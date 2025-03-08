@@ -108,19 +108,19 @@ public class AutoMovement {
 
         double deltaTheta = MathFunctions.AngleWrap(targetPose.heading - robotPose.heading);
 
-        double turnPower = deltaTheta/Math.PI;
+        double turnPower = deltaTheta/Math.PI * turnSpeed;
 
-        double m1 = Math.tanh(deltaY * Math.sin(robotPose.heading)) * ActuationConstants.Autonomous.moveAccelMult;
-        double m2 = Math.tanh(deltaX * Math.cos(robotPose.heading)) * ActuationConstants.Autonomous.moveAccelMult;
+        double m1 = (Math.tanh(deltaY * ActuationConstants.Autonomous.moveAccelMult) * Math.sin(robotPose.heading)) * movementSpeed;
+        double m2 = (Math.tanh(deltaX * ActuationConstants.Autonomous.moveAccelMult) * Math.cos(robotPose.heading)) * movementSpeed;
 
-        double s1 = -Math.tanh(deltaY * Math.cos(robotPose.heading)) * ActuationConstants.Autonomous.moveAccelMult;
-        double s2 = Math.tanh(deltaX * Math.sin(robotPose.heading)) * ActuationConstants.Autonomous.moveAccelMult;
+        double s1 = (-Math.tanh(deltaY * ActuationConstants.Autonomous.moveAccelMult) * Math.cos(robotPose.heading)) * movementSpeed;
+        double s2 = (Math.tanh(deltaX * ActuationConstants.Autonomous.moveAccelMult) * Math.sin(robotPose.heading)) * movementSpeed;
 
-        double movePower = (m1 * Math.abs(m1) + m2 * Math.abs(m2)) * movementSpeed;
-        double strafePower =  (s1 * Math.abs(s1) + s2 * Math.abs(s2)) * movementSpeed;
+        double movePower = (m1 * Math.abs(m1) + m2 * Math.abs(m2));
+        double strafePower =  (s1 * Math.abs(s1) + s2 * Math.abs(s2));
 
-        if (turnPower >= 0) turnPower = turnSpeed * Math.pow(turnPower, (1.0/ActuationConstants.Autonomous.turnAccelMult));
-        else turnPower = turnSpeed * -Math.pow(-turnPower, (1.0/ActuationConstants.Autonomous.turnAccelMult));
+        if(turnPower > 0) turnPower = Math.pow(turnPower, 1.0/ActuationConstants.Autonomous.turnAccelMult) * turnSpeed;
+        else turnPower = -Math.pow(-turnPower, 1.0/ActuationConstants.Autonomous.turnAccelMult) * turnSpeed;
 
         double v1 = movePower - turnPower + strafePower;
         double v2 = movePower + turnPower - strafePower;
@@ -138,7 +138,7 @@ public class AutoMovement {
         packet.put("movePower", movePower);
         packet.put("turnPower", turnPower);
         packet.put("strafePower", strafePower);
-        dashboard.sendTelemetryPacket(packet);
+//        dashboard.sendTelemetryPacket(packet);
     }
 
     public static double calcTurnTowards(double targetHeading, double turnSpeed) {

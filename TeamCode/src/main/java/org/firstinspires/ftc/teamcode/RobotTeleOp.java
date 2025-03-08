@@ -17,28 +17,26 @@ public class RobotTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        Actuation.drive(-gamepad1.left_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x);
+        Actuation.teleDrive(gamepad1.left_stick_button, false, -gamepad1.left_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x);
 
         Actuation.basketExtension(gamepad2.triangle);
         Actuation.chamberExtension(gamepad2.square);
         Actuation.retractExtension(gamepad2.cross);
         Actuation.intakeExtension(gamepad2.circle);
 
-        Actuation.adjustExtension(10 * gamepad2.left_trigger);
-        Actuation.adjustExtension(-10 * gamepad2.right_trigger);
+        Actuation.adjustExtension(25 * gamepad2.left_trigger);
+        Actuation.adjustExtension(-25 * gamepad2.right_trigger);
 
-        if (gamepad2.left_bumper)
-            Actuation.adjustTilt(10);
-        if (gamepad2.right_bumper)
-            Actuation.adjustTilt(-10);
+        Actuation.adjustTilt(35 * gamepad1.left_trigger);
+        Actuation.adjustTilt(-35 * gamepad1.right_trigger);
 
         Actuation.tiltObservation(gamepad1.square);
         Actuation.tiltBasketDeposit(gamepad1.triangle);
         Actuation.tiltChamberDeposit(gamepad1.dpad_right);
         Actuation.tiltSubmersible(gamepad1.cross);
 
-        Actuation.toggleClaw(gamepad1.right_bumper);
-        Actuation.powerWrist(gamepad2.left_stick_y, gamepad2.right_stick_x);
+        Actuation.toggleClaw(gamepad1.right_bumper || gamepad2.right_bumper);
+        Actuation.powerWrist(-gamepad2.left_stick_y/2.0, gamepad2.right_stick_x/2.0);
 
         AutoMovement.updatePosition();
         AutoMovement.displayPosition();
