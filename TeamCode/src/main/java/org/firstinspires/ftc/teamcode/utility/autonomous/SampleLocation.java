@@ -28,7 +28,7 @@ public class SampleLocation extends OpenCvPipeline {
     private static Mat frame;
     private static final Point resolution = new Point(640, 360);
     private static final Point clawPos = new Point(320, 180);
-    public static String desiredColor = "red";
+    public static String desiredColor = "yellow";
     private static String redChange = "red1";
     private static boolean upP = false, downP = false,
             triP = false, croP = false,
@@ -49,9 +49,11 @@ public class SampleLocation extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
-        Mat rotated = new Mat();
-        Core.rotate(input, rotated, Core.ROTATE_90_COUNTERCLOCKWISE);
+        Core.rotate(input, input, Core.ROTATE_90_COUNTERCLOCKWISE);
+        Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2HSV);
         frame = input;
+        locateContours(input, new ArrayList<>(), new ArrayList<>(), desiredColor);
+        Imgproc.cvtColor(input, input, Imgproc.COLOR_HSV2RGB);
         return input;
     }
     public static org.firstinspires.ftc.teamcode.utility.dataTypes.Point findSample(double slidesLength) {

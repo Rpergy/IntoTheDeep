@@ -37,6 +37,11 @@ public class RobotTeleOp extends OpMode {
             Point change = SampleLocation.findSample(Actuation.extend.getCurrentPosition());
             Pose newPos = AutoMovement.robotPose.augment(new Pose(0, -change.x, 0));
             AutoMovement.moveTowards(newPos, 0.7, 0.5);
+
+            telemetry.addData("movement", change.x);
+            telemetry.addData("slides", change.y);
+            telemetry.update();
+
             if (change.y > 0 && change.y < 4000) {
                 Actuation.setExtension((int)change.y);
             }
