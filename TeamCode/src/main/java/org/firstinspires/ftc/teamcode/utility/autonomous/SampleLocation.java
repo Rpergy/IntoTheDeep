@@ -35,9 +35,6 @@ public class SampleLocation extends OpenCvPipeline {
             circP = false, sqrP = false,
             leftP = false, rightP = false,
             mode = false;
-
-    private static final Point topLeftCrop = new Point(540, 260);
-    private static final Point bottomRightCrop = new Point(100, 100);
     private static Scalar minRed1 = new Scalar(0, 50, 0);
     private static Scalar maxRed1 = new Scalar(10, 255, 255);
     private static Scalar minRed2 = new Scalar(150, 100, 100);
@@ -50,8 +47,8 @@ public class SampleLocation extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         Core.rotate(input, input, Core.ROTATE_90_COUNTERCLOCKWISE);
-        Imgproc.cvtColor(input, input, Imgproc.COLOR_BGR2HSV);
-        frame = input;
+        Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2HSV);
+        frame = input.clone();
         locateContours(input, new ArrayList<>(), new ArrayList<>(), desiredColor);
         Imgproc.cvtColor(input, input, Imgproc.COLOR_HSV2RGB);
         return input;
@@ -168,10 +165,8 @@ public class SampleLocation extends OpenCvPipeline {
                 int cx = (int) (moments.get_m10() / moments.get_m00());
                 int cy = (int) (moments.get_m01() / moments.get_m00());
                 Imgproc.circle(output_image, new Point(cx, cy), 5, new Scalar(0, 0, 255), -1);
-                if (topLeftCrop.x <= cx && cx <= bottomRightCrop.x && bottomRightCrop.y <= cy && cy <= topLeftCrop.y) {
-                    centers.add(new Point(cx, cy));
-                    rotations.add(angle);
-                }
+                centers.add(new Point(cx, cy));
+                rotations.add(angle);
             }
         }
     }
