@@ -4,8 +4,11 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.utility.Actuation;
+import org.firstinspires.ftc.teamcode.utility.ActuationConstants;
 import org.firstinspires.ftc.teamcode.utility.autonomous.AutoMovement;
+import org.firstinspires.ftc.teamcode.utility.autonomous.SampleLocation;
 import org.firstinspires.ftc.teamcode.utility.dataTypes.Pose;
+import org.firstinspires.ftc.teamcode.utility.dataTypes.Point;
 
 @TeleOp(name="TeleOp")
 public class RobotTeleOp extends OpMode {
@@ -13,6 +16,7 @@ public class RobotTeleOp extends OpMode {
     public void init() {
         Actuation.setup(hardwareMap, telemetry);
         AutoMovement.setStartPos(new Pose(-36, 65, Math.toRadians(-90)));
+
     }
 
     @Override
@@ -29,6 +33,15 @@ public class RobotTeleOp extends OpMode {
 
         Actuation.adjustTilt(35 * gamepad1.left_trigger);
         Actuation.adjustTilt(-35 * gamepad1.right_trigger);
+
+        if (gamepad1.left_bumper) {
+            Point change = SampleLocation.findSample(Actuation.extend.getCurrentPosition());
+            Pose newPos = AutoMovement.robotPose.augment(new Pose(0, -change.x, 0));
+            AutoMovement.moveTowards(newPos, 0.7, 0.5);
+            if (change.y > 0 && change.y < 4000) {
+                Actuation.setExtension((int)change.y);
+            }
+        }
 
         Actuation.tiltObservation(gamepad1.square);
         Actuation.tiltBasketDeposit(gamepad1.triangle);
