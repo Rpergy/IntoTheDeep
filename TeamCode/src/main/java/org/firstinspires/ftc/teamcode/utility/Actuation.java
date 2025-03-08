@@ -12,8 +12,13 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.utility.autonomous.AutoMovement;
 import org.firstinspires.ftc.teamcode.utility.autonomous.FieldConstants;
+import org.firstinspires.ftc.teamcode.utility.autonomous.SampleLocation;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
 public class Actuation {
     public static boolean slowMode = false;
@@ -39,6 +44,8 @@ public class Actuation {
 
     public static Servo claw;
     public static CRServo leftWrist, rightWrist;
+
+    public static OpenCvCamera webcam;
 
 //    private static RevBlinkinLedDriver leds;
 
@@ -108,6 +115,28 @@ public class Actuation {
         if (map.crservo.contains("rightWrist")) {
             rightWrist = map.crservo.get("rightWrist");
         }
+
+        // CAMERA
+        int cameraMonitorViewId = map.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", map.appContext.getPackageName());
+
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(map.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        webcam.setPipeline(new SampleLocation());
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                webcam.startStreaming((int) 640, (int) 360, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {
+
+            }
+        });
+
+        // Dashboard Setup
+
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        dashboard.startCameraStream(webcam, 60);
 
         dashboard = FtcDashboard.getInstance();
     }

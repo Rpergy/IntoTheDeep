@@ -47,32 +47,6 @@ public class SampleLocation extends OpenCvPipeline {
     private static Scalar minYellow = new Scalar(10, 140, 120);
     private static Scalar maxYellow = new Scalar(25, 255, 255);
 
-    public static void setup(HardwareMap hardwareMap) throws IOException {
-
-        // Camera Setup
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        webcam.setPipeline(new SampleLocation());
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                webcam.startStreaming((int) resolution.x, (int) resolution.y, OpenCvCameraRotation.UPRIGHT);
-            }
-
-            @Override
-            public void onError(int errorCode) {
-
-            }
-        });
-
-        // Dashboard Setup
-
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        dashboard.startCameraStream(webcam, 60);
-    }
-
     @Override
     public Mat processFrame(Mat input) {
         Mat rotated = new Mat();

@@ -16,7 +16,6 @@ public class RobotTeleOp extends OpMode {
     public void init() {
         Actuation.setup(hardwareMap, telemetry);
         AutoMovement.setStartPos(new Pose(-36, 65, Math.toRadians(-90)));
-
     }
 
     @Override
