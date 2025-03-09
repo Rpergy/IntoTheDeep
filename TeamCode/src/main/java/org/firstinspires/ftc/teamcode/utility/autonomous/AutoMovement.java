@@ -128,7 +128,7 @@ public class AutoMovement {
         if (strafePower > 0) strafePower = Math.pow(strafePower, 0.9);
         else if (strafePower < 0) strafePower = -Math.pow(-strafePower, 0.9);
 
-        double minSpeed = 0.09;
+        double minSpeed = 0.15;
 
         if (movePower > 0 && movePower < minSpeed) movePower = minSpeed;
         else if (movePower < 0 && movePower > -minSpeed) movePower = -minSpeed;

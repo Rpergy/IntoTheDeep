@@ -46,7 +46,7 @@ public class ActuationConstants {
         public static int init = 1250;
         public static int intakeSetup = 1700;
         public static int intake = 2400;
-        public static int intakeSpecimen = 1850;
+        public static int intakeSpecimen = 1700;
         public static int basketDeposit = 400;
         public static int chamberDeposit = 1100;
         public static int hang = 200;

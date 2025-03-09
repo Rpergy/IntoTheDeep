@@ -47,20 +47,20 @@ public class RightRed extends LinearOpMode {
                 .lineTo(new Pose(59, -14, Math.toRadians(90)), 0.8, 0.7)
                 .lineTo(new Pose(59, -49, Math.toRadians(90)), 0.8, 0.7)
                 .lineTo(new Pose(59, -14, Math.toRadians(90)), 0.8, 0.7)
-                .lineTo(new Pose(63, -49, Math.toRadians(90)), 0.8, 0.7)
-                .lineTo(new Pose(63, -14, Math.toRadians(90)), 0.8, 0.7);
+                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.basketDeposit))
+                .lineTo(new Pose(63, -49, Math.toRadians(90)), 0.8, 0.7);
 
-        Trajectory intakeSpecimen = new Trajectory()
-                .lineTo(new Pose(34, -20, Math.toRadians(-90)))
-                .action(() -> sleep(1500))
-                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSpecimen))
-                .action(() -> sleep(10000));
+//        Trajectory intakeSpecimen = new Trajectory()
+//                .lineTo(new Pose(34, -20, Math.toRadians(-90)))
+//                .action(() -> sleep(1500))
+//                .action(() -> Actuation.setTilt(ActuationConstants.Tilt.intakeSpecimen))
+//                .action(() -> sleep(10000));
 
         waitForStart();
 
         depositPreload.run();
         pushSamples.run();
-        intakeSpecimen.run();
+//        intakeSpecimen.run();
 
 //        while (opModeIsActive()) {
 //            telemetry.addData("x", AutoMovement.robotPose.x);
