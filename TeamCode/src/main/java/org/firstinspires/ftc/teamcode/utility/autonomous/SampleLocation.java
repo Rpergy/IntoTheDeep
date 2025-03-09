@@ -47,13 +47,12 @@ public class SampleLocation extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
 //        Core.rotate(input, input, Core.ROTATE_90_COUNTERCLOCKWISE);
-        Imgproc.cvtColor(input, input, Imgproc.COLOR_BGR2HSV);
-//        frame = input.clone();
+        Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2HSV);
+        frame = input.clone();
 
         locateContours(input, new ArrayList<>(), new ArrayList<>(), desiredColor);
-        Imgproc.cvtColor(input, input, Imgproc.COLOR_HSV2BGR);
-        return new Mat(1, 1, CvType.CV_8UC3);
-//        return input;
+        Imgproc.cvtColor(input, input, Imgproc.COLOR_HSV2RGB);
+        return input;
     }
     public static org.firstinspires.ftc.teamcode.utility.dataTypes.Point findSample(double slidesLength) {
         Mat out = frame.clone();
