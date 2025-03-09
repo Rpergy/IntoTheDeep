@@ -2,10 +2,13 @@ package org.firstinspires.ftc.teamcode.utility.autonomous;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import com.acmerobotics.dashboard.FtcDashboard;
 import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Rect;
 import org.opencv.core.RotatedRect;
 import java.io.IOException;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.CvType;
+import org.opencv.core.Size;
+import org.opencv.dnn.Dnn;
 import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -46,11 +49,10 @@ public class SampleLocation extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
-//        Core.rotate(input, input, Core.ROTATE_90_COUNTERCLOCKWISE);
+        Core.rotate(input, input, Core.ROTATE_90_COUNTERCLOCKWISE);
         Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2HSV);
         frame = input.clone();
-
-        locateContours(input, new ArrayList<>(), new ArrayList<>(), desiredColor);
+        input = locateContours(input, new ArrayList<>(), new ArrayList<>(), desiredColor);
         Imgproc.cvtColor(input, input, Imgproc.COLOR_HSV2RGB);
         return input;
     }
@@ -91,7 +93,7 @@ public class SampleLocation extends OpenCvPipeline {
         Mat hsv = image.clone();
 
         // Median Blur (Reduces Noise)
-        Imgproc.medianBlur(hsv, hsv, 3);
+        Imgproc.medianBlur(hsv, hsv, 11);
 
         // HSV Masking
         if (color.equals("red")) {
@@ -151,6 +153,8 @@ public class SampleLocation extends OpenCvPipeline {
             line.get(0, 0, data);
             double vx = data[0];
             double vy = data[1];
+            double x = data[2];
+            double y = data[3];
 
             double angle = Math.atan2(vy, vx);
             angle = Math.toDegrees(angle);
@@ -173,22 +177,37 @@ public class SampleLocation extends OpenCvPipeline {
     }
     private static List<Object> closestPoint(List<Point> centroids, List<Double> rotations) {
         double closeDist = Integer.MAX_VALUE;
-        Point closePoint = new Point(0, 0);
-        double closestRot = 0;
+        Point closePoint = new Point();
+        double closestRot = 0.0;
         for (int i = 0; i < centroids.size(); i++) {
-            if (Math.sqrt(Math.pow(centroids.get(i).x - clawPos.x, 2) + Math.pow(centroids.get(i).y - clawPos.y, 2)) < closeDist) {
-                closeDist = Math.sqrt(Math.pow(centroids.get(i).x - clawPos.x, 2) + Math.pow(centroids.get(i).y - clawPos.y, 2));
+            if (Math.sqrt(Math.pow(centroids.get(i).x-clawPos.x, 2)+Math.pow(centroids.get(i).y-clawPos.y, 2)) < closeDist) {
+                closeDist = Math.sqrt(Math.pow(centroids.get(i).x-clawPos.x, 2)+Math.pow(centroids.get(i).y-clawPos.y, 2));
                 closePoint = centroids.get(i);
                 closestRot = rotations.get(i);
             }
         }
-
-        ArrayList<Object> ret = new ArrayList<>();
-
+        List<Object> ret = new ArrayList<>();
         ret.add(closePoint);
         ret.add(closestRot);
-
         return ret;
+    }
+    private static Point bound(Point point) {
+        double x = point.x;
+        double y = point.y;
+        if (x < 0) {
+            x = 0;
+        } else if (x > resolution.y-1) {
+            x = resolution.y-1;
+        }
+        if (y < 0) {
+            y = 0;
+        } else if (y > resolution.x-1) {
+            y = resolution.x-1;
+        }
+        return new Point(x, y);
+    }
+    public static void setColor(String newColor) {
+        desiredColor = newColor;
     }
     private static String updateThresholds(String color, Gamepad gamepad1) {
 
@@ -265,20 +284,5 @@ public class SampleLocation extends OpenCvPipeline {
                 "\nminYellow=" + minYellow + "\nmaxYellow=" + maxYellow +
                 "\nColor=" + desiredColor + ((mode) ? "\nMode=maximum" : "\nMode=minimum") +
                 "RedType=" + redChange + " (Only if color is on red)";
-    }
-    private static Point bound(Point point) {
-        double x = point.x;
-        double y = point.y;
-        if (x < 0) {
-            x = 0;
-        } else if (x > resolution.y - 1) {
-            x = resolution.y - 1;
-        }
-        if (y < 0) {
-            y = 0;
-        } else if (y > resolution.x - 1) {
-            y = resolution.x - 1;
-        }
-        return new Point(x, y);
     }
 }
