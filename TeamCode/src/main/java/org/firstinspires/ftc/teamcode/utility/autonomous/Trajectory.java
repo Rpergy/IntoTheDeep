@@ -93,7 +93,7 @@ public class Trajectory {
         double dist = MathFunctions.distance(robotPose.toPoint(), targetPose.toPoint());
         double rotDist = robotPose.heading - targetPose.heading;
 
-        while(dist > 1.0 || Math.abs(MathFunctions.AngleWrap(rotDist)) > Math.toRadians(4)) {
+        while((Math.abs(robotPose.x - targetPose.x) > 1.0 || Math.abs(robotPose.y - targetPose.y) > 1.0) || Math.abs(MathFunctions.AngleWrap(rotDist)) > Math.toRadians(4)) {
             AutoMovement.updatePosition();
 
             AutoMovement.displayPosition(); //omkarisgay and fat obese large
@@ -103,7 +103,8 @@ public class Trajectory {
             dist = MathFunctions.distance(robotPose.toPoint(), targetPose.toPoint());
             rotDist = Math.abs(robotPose.heading - targetPose.heading);
 
-            Actuation.telemetry.addData("dist", dist);
+            Actuation.telemetry.addData("x dist", (Math.abs(robotPose.x - targetPose.x)));
+            Actuation.telemetry.addData("y dist", (Math.abs(robotPose.y - targetPose.y)));
             Actuation.telemetry.addData("rotDist", Math.toDegrees(MathFunctions.AngleWrap(rotDist)));
             Actuation.telemetry.update();
 

@@ -175,6 +175,8 @@ public class Actuation {
 
     // EXTEND
     public static void setExtension(int pos) {
+        if (tilt.getTargetPosition() > 1200)
+            pos = Math.min(pos, ActuationConstants.Extend.max);
         extend.setTargetPosition(pos);
     }
 
@@ -229,7 +231,7 @@ public class Actuation {
         if (input && !chamberToggle) {
             basketState = 0;
             chamberState += 1;
-            if (chamberState == 3) chamberState = 0;
+            if (chamberState >= 3) chamberState = 0;
 
             if (chamberState == 0) {
                 setExtension(ActuationConstants.Extend.init);
@@ -291,15 +293,8 @@ public class Actuation {
     }
 
     public static void tiltSubmersible(boolean input) {
-        if (input && !submersibleToggle) {
-            submersibleState = !submersibleState;
-
-            if (submersibleState) {
-                setTilt(ActuationConstants.Tilt.intakeSetup);
-            }
-            else {
-                setTilt(ActuationConstants.Tilt.intake);
-            }
+        if (input) {
+            setTilt(ActuationConstants.Tilt.intakeSetup);
         }
     }
 

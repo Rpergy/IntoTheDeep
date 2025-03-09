@@ -122,6 +122,20 @@ public class AutoMovement {
         if(turnPower > 0) turnPower = Math.pow(turnPower, 1.0/ActuationConstants.Autonomous.turnAccelMult) * turnSpeed;
         else turnPower = -Math.pow(-turnPower, 1.0/ActuationConstants.Autonomous.turnAccelMult) * turnSpeed;
 
+        if (movePower > 0) movePower = Math.pow(movePower, 0.9);
+        else if (movePower < 0) movePower = -Math.pow(-movePower, 0.9);
+
+        if (strafePower > 0) strafePower = Math.pow(strafePower, 0.9);
+        else if (strafePower < 0) strafePower = -Math.pow(-strafePower, 0.9);
+
+        double minSpeed = 0.09;
+
+        if (movePower > 0 && movePower < minSpeed) movePower = minSpeed;
+        else if (movePower < 0 && movePower > -minSpeed) movePower = -minSpeed;
+
+        if (strafePower > 0 && strafePower < minSpeed) strafePower = minSpeed;
+        else if (strafePower < 0 && strafePower > -minSpeed) strafePower = -minSpeed;
+
         double v1 = movePower - turnPower + strafePower;
         double v2 = movePower + turnPower - strafePower;
         double v3 = movePower - turnPower - strafePower;
@@ -134,11 +148,9 @@ public class AutoMovement {
         Actuation.backLeft.setPower(v3 * voltageComp);
         Actuation.backRight.setPower(v4 * voltageComp);
 
-        TelemetryPacket packet = new TelemetryPacket();
-        packet.put("movePower", movePower);
-        packet.put("turnPower", turnPower);
-        packet.put("strafePower", strafePower);
-//        dashboard.sendTelemetryPacket(packet);
+        Actuation.telemetry.addData("movePower", movePower);
+        Actuation.telemetry.addData("turnPower", turnPower);
+        Actuation.telemetry.addData("strafePower", strafePower);
     }
 
     public static double calcTurnTowards(double targetHeading, double turnSpeed) {

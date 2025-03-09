@@ -46,9 +46,9 @@ public class FieldConstants {
         public static Pose observation2 = new Pose(58, -50, Math.toRadians(-90));
         public static Pose deliverPoint = new Pose(observation1);
         public static Pose pickupPoint = new Pose(observation2);
-        public static Pose baskets = new Pose(-53.3,-51.3, Math.toRadians(-135));
+        public static Pose baskets = new Pose(-53.5,-52.5, Math.toRadians(-135));
 
-        public static Pose neutralSamples = new Pose(-49,-42,Math.toRadians(90));
+        public static Pose neutralSamples = new Pose(-48.5,-42,Math.toRadians(90));
         public static Pose allianceSamples = new Pose(28,-33,Math.toRadians(45));
 
         public static Pose specimenPickup = new Pose(40, -53, Math.toRadians(-90));

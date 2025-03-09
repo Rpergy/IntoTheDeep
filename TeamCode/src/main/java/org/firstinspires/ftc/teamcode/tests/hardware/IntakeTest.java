@@ -31,13 +31,13 @@ public class IntakeTest extends OpMode {
         armTilt = (DcMotorEx)hardwareMap.dcMotor.get("armTilt");
         extend = (DcMotorEx)hardwareMap.dcMotor.get("extend");
 
-        armTilt.setPower(0.0);
+        armTilt.setPower(1.0);
         armTilt.setTargetPosition(500);
         armTilt.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armTilt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armTilt.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        extend.setPower(0.0);
+        extend.setPower(1.0);
         extend.setTargetPosition(300);
         extend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         extend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

@@ -15,7 +15,6 @@ public class RobotTeleOp extends OpMode {
     @Override
     public void init() {
         Actuation.setup(hardwareMap, telemetry);
-        AutoMovement.setStartPos(new Pose(-36, 65, Math.toRadians(-90)));
     }
 
     @Override
@@ -27,8 +26,8 @@ public class RobotTeleOp extends OpMode {
         Actuation.retractExtension(gamepad2.cross);
         Actuation.intakeExtension(gamepad2.circle);
 
-        Actuation.adjustExtension(25 * gamepad2.left_trigger);
-        Actuation.adjustExtension(-25 * gamepad2.right_trigger);
+        Actuation.adjustExtension(40 * gamepad2.left_trigger);
+        Actuation.adjustExtension(-40 * gamepad2.right_trigger);
 
         Actuation.adjustTilt(35 * gamepad1.left_trigger);
         Actuation.adjustTilt(-35 * gamepad1.right_trigger);
